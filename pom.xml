@@ -12,7 +12,6 @@
     <modules>
         <module>protocolize-api</module>
         <module>protocolize-velocity</module>
-        <module>protocolize-bungeecord</module>
     </modules>
 
     <properties>
@@ -20,7 +19,6 @@
         <maven.compiler.target>8</maven.compiler.target>
 
         <build.number>unknown</build.number>
-        <bungeecord.version>1.20-R0.2-SNAPSHOT</bungeecord.version>
         <velocity.version>3.3.0-SNAPSHOT</velocity.version>
         <bytebuddy.version>1.11.13</bytebuddy.version>
         <data.version>2.4.3</data.version>

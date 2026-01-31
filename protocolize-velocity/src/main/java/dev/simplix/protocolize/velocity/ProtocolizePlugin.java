@@ -91,6 +91,9 @@ public class ProtocolizePlugin {
         Protocolize.registerService(ModuleProvider.class, new VelocityModuleProvider());
         Protocolize.registerService(ProtocolRegistrationProvider.class, new VelocityProtocolRegistrationProvider());
         Protocolize.registerService(PacketListenerProvider.class, new VelocityPacketListenerProvider());
+
+        // Allow selectively bypassing Protocolize for certain packets / versions
+        Protocolize.registerService(PacketBypassProvider.class, new VelocityPacketBypassProvider());
     }
 
     @Subscribe
