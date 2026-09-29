@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 /**
  * Context for deciding whether Protocolize should bypass processing for a packet.
  * <p>
- * Note: {@link #player()} may be null during early handshake/status phases.
+ * Note: {@code player()} may be null during early handshake/status phases.
  */
 @Getter
 @Accessors(fluent = true)

@@ -50,9 +50,12 @@ dependencies {
 Protocolize is shipped with it's default data module which adds support for the following versions:
 | Minecraft Version | Supported |
 |--|--|
-| 1.8.x - 1.12.2 | ❌ (Only with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) |
-| 1.13 - 1.13.2 | ✔️ (Sounds only with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) |
-| 1.14 - 1.21 | ✔️ |
+| 1.8.x | ✔️ (Only with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) |
+| 1.9 - 1.20.6 | ❌ |
+| 1.21 - 1.21.11 | ✔️ |
+| 26.1 - 26.3 | ✔️ (Requires a Velocity build supporting the version) |
+
+Protocolize requires Velocity 3.5.0 or newer running on Java 21.
 
 Implemented packets by default:
 

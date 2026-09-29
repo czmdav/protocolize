@@ -16,6 +16,7 @@ import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.player.ProtocolizePlayer;
 import dev.simplix.protocolize.api.providers.ProtocolizePlayerProvider;
 import dev.simplix.protocolize.api.util.PacketBypassContext;
+import dev.simplix.protocolize.api.util.ReflectionUtil;
 import dev.simplix.protocolize.velocity.providers.VelocityPacketListenerProvider;
 import dev.simplix.protocolize.velocity.util.ConversionUtils;
 import io.netty.channel.ChannelHandlerContext;

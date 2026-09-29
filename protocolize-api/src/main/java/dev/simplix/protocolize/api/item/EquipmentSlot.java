@@ -8,5 +8,9 @@ public enum EquipmentSlot {
     CHEST,
     HEAD,
     OFFHAND,
-    BODY;
+    BODY,
+    /**
+     * @since Minecraft 1.21.5
+     */
+    SADDLE;
 }

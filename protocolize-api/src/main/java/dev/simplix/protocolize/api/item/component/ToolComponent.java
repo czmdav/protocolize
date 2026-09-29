@@ -25,6 +25,13 @@ public interface ToolComponent extends StructuredComponent {
 
     void setDamagePerBlock(int damagePerBlock);
 
+    /**
+     * @since Minecraft 1.21.5
+     */
+    boolean isCanDestroyBlocksInCreative();
+
+    void setCanDestroyBlocksInCreative(boolean canDestroyBlocksInCreative);
+
     static ToolComponent create(List<ToolRule> rules, float miningSpeed, int damagePerBlock) {
         return Protocolize.getService(Factory.class).create(rules, miningSpeed, damagePerBlock);
     }

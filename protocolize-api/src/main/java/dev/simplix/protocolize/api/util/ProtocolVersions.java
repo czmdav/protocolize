@@ -2,6 +2,10 @@ package dev.simplix.protocolize.api.util;
 
 /**
  * This class contains protocol constants.
+ * <p>
+ * Protocolize supports Minecraft 1.8.x (item mappings via the legacy data module) and
+ * Minecraft {@link #MINECRAFT_1_21} up to {@link #MINECRAFT_LATEST}. The constants of the versions
+ * in between are only kept as protocol number references and are not supported anymore.
  */
 public final class ProtocolVersions {
 
@@ -57,11 +61,34 @@ public final class ProtocolVersions {
     public final static int MINECRAFT_1_21_2 = 768;
     public final static int MINECRAFT_1_21_3 = MINECRAFT_1_21_2;
     public final static int MINECRAFT_1_21_4 = 769;
+    public final static int MINECRAFT_1_21_5 = 770;
+    public final static int MINECRAFT_1_21_6 = 771;
+    public final static int MINECRAFT_1_21_7 = 772;
+    public final static int MINECRAFT_1_21_8 = MINECRAFT_1_21_7;
+    public final static int MINECRAFT_1_21_9 = 773;
+    public final static int MINECRAFT_1_21_10 = MINECRAFT_1_21_9;
+    public final static int MINECRAFT_1_21_11 = 774;
+    public final static int MINECRAFT_26_1 = 775;
+    public final static int MINECRAFT_26_1_1 = MINECRAFT_26_1;
+    public final static int MINECRAFT_26_1_2 = MINECRAFT_26_1;
+    public final static int MINECRAFT_26_2 = 776;
+    public final static int MINECRAFT_26_3 = 777;
 
-    public final static int MINECRAFT_LATEST = MINECRAFT_1_21_4;
+    /**
+     * The oldest supported modern protocol version. Versions between {@link #MINECRAFT_1_8} and this one are not supported.
+     */
+    public final static int MINECRAFT_OLDEST_MODERN = MINECRAFT_1_21;
+    public final static int MINECRAFT_LATEST = MINECRAFT_26_3;
 
     private ProtocolVersions() {
     }
 
+    /**
+     * @param protocolVersion the protocol version to check
+     * @return true if protocolize supports the given protocol version
+     */
+    public static boolean isSupported(int protocolVersion) {
+        return protocolVersion == MINECRAFT_1_8 || (protocolVersion >= MINECRAFT_OLDEST_MODERN && protocolVersion <= MINECRAFT_LATEST);
+    }
 
 }

@@ -36,7 +36,7 @@ public class ProtocolizeBackendChannelInitializer extends BackendChannelInitiali
     }
 
     @Override
-    protected void initChannel(Channel ch) throws Exception {
+    protected void initChannel(Channel ch) {
         try {
             if (wrapped != null && initMethod != null) {
                 log.debug("Calling the underlying backend channel initializer: {}", wrapped.getClass().getName());

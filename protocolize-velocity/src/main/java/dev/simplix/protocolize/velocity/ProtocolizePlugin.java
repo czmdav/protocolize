@@ -9,12 +9,14 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.PluginDescription;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.util.GameProfile;
 import com.velocitypowered.proxy.VelocityServer;
 import com.velocitypowered.proxy.network.ConnectionManager;
 import dev.simplix.protocolize.api.PlatformInitializer;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.providers.*;
 import dev.simplix.protocolize.api.util.ProtocolVersions;
+import dev.simplix.protocolize.api.util.SkullProfileResolver;
 import dev.simplix.protocolize.velocity.commands.ProtocolizeCommand;
 import dev.simplix.protocolize.velocity.listener.PlayerListener;
 import dev.simplix.protocolize.velocity.netty.ProtocolizeBackendChannelInitializer;
@@ -112,11 +114,28 @@ public class ProtocolizePlugin {
 
         ((VelocityModuleProvider) Protocolize.getService(ModuleProvider.class)).enableAll();
 
+        // Skull owners of online players can be resolved without asking the Mojang API
+        SkullProfileResolver.localLookup(name -> proxyServer.getPlayer(name).map(player -> {
+            for (GameProfile.Property property : player.getGameProfileProperties()) {
+                if (property.getName().equals("textures")) {
+                    String signature = property.getSignature() == null || property.getSignature().isEmpty() ? null : property.getSignature();
+                    return new SkullProfileResolver.Profile(player.getUniqueId(), player.getUsername(), property.getValue(), signature);
+                }
+            }
+            return null;
+        }).orElse(null));
+
         Protocolize.playerProvider().onConstruct(protocolizePlayer -> {
+            Player player = protocolizePlayer.handle();
+            if (!ProtocolVersions.isSupported(protocolizePlayer.protocolVersion())) {
+                logger.warn("=== WARNING ===");
+                logger.warn("The player {} is using {} which is not supported by protocolize. Supported are 1.8.x (with the legacy module) and 1.21 - 26.3.",
+                    player.getUsername(), player.getProtocolVersion().getMostRecentSupportedVersion());
+                return;
+            }
             if (Protocolize.getService(ModuleProvider.class).moduleInstalled("LegacyModule")) {
                 return;
             }
-            Player player = protocolizePlayer.handle();
             if (protocolizePlayer.protocolVersion() < ProtocolVersions.MINECRAFT_1_13) {
                 logger.warn("=== WARNING ===");
                 logger.warn("The player {} is using {} which is not supported by protocolize by default.", player.getUsername(), player.getProtocolVersion().getMostRecentSupportedVersion());

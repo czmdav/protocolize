@@ -46,6 +46,14 @@ public class ConsumeEffect {
     @AllArgsConstructor
     public static class TeleportRandomly implements ConsumeEffectInstance {
         float diameter;
+        /**
+         * @since Minecraft 26.3
+         */
+        boolean directionalParticles;
+
+        public TeleportRandomly(float diameter) {
+            this(diameter, false);
+        }
 
         public ConsumeEffectType getType(){
             return ConsumeEffectType.TELEPORT_RANDOMLY;
