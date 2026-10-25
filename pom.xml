@@ -12,7 +12,6 @@
     <modules>
         <module>protocolize-api</module>
         <module>protocolize-velocity</module>
-        <module>protocolize-bungeecord</module>
     </modules>
 
     <properties>
@@ -20,8 +19,7 @@
         <maven.compiler.target>8</maven.compiler.target>
 
         <build.number>unknown</build.number>
-        <bungeecord.version>1.20-R0.2-SNAPSHOT</bungeecord.version>
-        <velocity.version>3.3.0-SNAPSHOT</velocity.version>
+        <velocity.version>3.5.0-SNAPSHOT</velocity.version>
         <bytebuddy.version>1.11.13</bytebuddy.version>
         <data.version>2.4.3</data.version>
     </properties>
@@ -45,7 +43,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
+            <version>1.18.38</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -21,8 +21,8 @@ public final class ProtocolizeCommand implements SimpleCommand {
     @Override
     public void execute(Invocation invocation) {
         if (invocation.arguments().length == 0) {
-            MessageUtil.sendLegacyMessage(invocation.source(), "§bProtocolize version " + plugin.version()
-                + " by " + plugin.description().getAuthors().toString().replace("[", "").replace("]", ""));
+            MessageUtil.sendLegacyMessage(invocation.source(), "§bEdited Protocolize version " + plugin.version()
+                + " by " + plugin.description().getAuthors().toString().replace("[", "").replace("]", "") + " and edited by Almunther.");
         } else if (invocation.arguments()[0].equalsIgnoreCase("debug")) {
             if (invocation.source() instanceof Player) {
                 MessageUtil.sendLegacyMessage(invocation.source(), "§cThis command can only be executed by the console.");

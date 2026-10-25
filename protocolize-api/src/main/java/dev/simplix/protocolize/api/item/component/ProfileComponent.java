@@ -23,6 +23,39 @@ public interface ProfileComponent extends StructuredComponent {
 
     void setProperties(List<Property> properties);
 
+    /**
+     * @return The texture asset overriding the skin, only used since Minecraft 1.21.9
+     */
+    @Nullable
+    String getBodyTexture();
+
+    void setBodyTexture(@Nullable String bodyTexture);
+
+    /**
+     * @return The texture asset overriding the cape, only used since Minecraft 1.21.9
+     */
+    @Nullable
+    String getCapeTexture();
+
+    void setCapeTexture(@Nullable String capeTexture);
+
+    /**
+     * @return The texture asset overriding the elytra, only used since Minecraft 1.21.9
+     */
+    @Nullable
+    String getElytraTexture();
+
+    void setElytraTexture(@Nullable String elytraTexture);
+
+    /**
+     * @return true to force the slim model, false to force the wide model and null to use the model of the skin.
+     * Only used since Minecraft 1.21.9
+     */
+    @Nullable
+    Boolean getSlimModel();
+
+    void setSlimModel(@Nullable Boolean slimModel);
+
     static ProfileComponent create(String name, UUID uniqueId, List<Property> properties) {
         return Protocolize.getService(Factory.class).create(name, uniqueId, properties);
     }

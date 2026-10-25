@@ -11,10 +11,10 @@ public interface StructuredComponentType<T extends StructuredComponent> {
     String getName();
 
     default DataComponentType getDataComponentType() {
-        String identifier = getName().toUpperCase();
+        String identifier = getName().toUpperCase(java.util.Locale.ROOT);
         if(identifier.contains(":"))
             identifier = identifier.split(":")[1];
-        return DataComponentType.valueOf(identifier);
+        return DataComponentType.valueOf(identifier.replace('.', '_').replace('/', '_'));
     }
 
     default List<ProtocolIdMapping> getMappings() {

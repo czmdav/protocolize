@@ -12,7 +12,10 @@ import dev.simplix.protocolize.api.Direction;
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.api.player.ProtocolizePlayer;
 import dev.simplix.protocolize.api.providers.ProtocolRegistrationProvider;
+import dev.simplix.protocolize.api.providers.ProtocolizePlayerProvider;
+import dev.simplix.protocolize.api.util.PacketBypassContext;
 import dev.simplix.protocolize.api.util.ReflectionUtil;
 import dev.simplix.protocolize.velocity.ProtocolizePlugin;
 import dev.simplix.protocolize.velocity.providers.VelocityPacketListenerProvider;
@@ -36,7 +39,7 @@ import java.util.Map;
 public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDecoder<MinecraftPacket> {
 
     private static final VelocityPacketListenerProvider LISTENER_PROVIDER = (VelocityPacketListenerProvider) Protocolize.listenerProvider();
-    private static final ProtocolRegistrationProvider REGISTRATION_PROVIDER = Protocolize.protocolRegistration();
+    private static final ProtocolizePlayerProvider PLAYER_PROVIDER = Protocolize.playerProvider();
     private static final Field CONNECTION_FIELD = ReflectionUtil.fieldOrNull(InitialInboundConnection.class, "connection", true);
     private final Direction streamDirection;
     private InboundConnection inboundConnection;
@@ -81,6 +84,12 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
                 if (serverConnection == null && inboundConnection == null) {
                     return;
                 }
+
+                // Bypass hook: skip all Protocolize processing (listeners, conversion, etc.)
+                if (shouldBypass(minecraftPacket)) {
+                    return;
+                }
+
                 Map.Entry<MinecraftPacket, Boolean> entry = LISTENER_PROVIDER.handleInboundPacket(minecraftPacket, serverConnection, inboundConnection);
                 if (entry == null) {
                     minecraftPacket = null;
@@ -93,6 +102,36 @@ public final class ProtocolizeDecoderChannelHandler extends MessageToMessageDeco
                     list.add(minecraftPacket);
                 }
             }
+        }
+    }
+
+    private boolean shouldBypass(MinecraftPacket minecraftPacket) {
+        try {
+            ProtocolizePlayer protocolizePlayer = null;
+            Object serverInfo = null;
+
+            if (serverConnection != null) {
+                var player = serverConnection.getPlayer();
+                protocolizePlayer = player != null ? PLAYER_PROVIDER.player(player.getUniqueId()) : null;
+                serverInfo = serverConnection.getServerInfo();
+            } else if (inboundConnection instanceof com.velocitypowered.api.proxy.Player) {
+                var player = (com.velocitypowered.api.proxy.Player) inboundConnection;
+                protocolizePlayer = PLAYER_PROVIDER.player(player.getUniqueId());
+                serverInfo = player.getCurrentServer().isPresent() ? player.getCurrentServer().get().getServerInfo() : null;
+            }
+
+            PacketBypassContext ctx = new PacketBypassContext(
+                streamDirection,
+                packetDirection,
+                protocolVersion != null ? protocolVersion.getProtocol() : 0,
+                protocolizePlayer,
+                serverInfo,
+                minecraftPacket.getClass()
+            );
+            return Protocolize.packetBypassProvider() != null && Protocolize.packetBypassProvider().shouldBypass(ctx);
+        } catch (Throwable ignored) {
+            // Never break pipeline because of bypass hook
+            return false;
         }
     }
 

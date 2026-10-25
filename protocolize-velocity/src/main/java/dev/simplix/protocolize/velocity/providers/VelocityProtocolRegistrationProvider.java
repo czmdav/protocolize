@@ -87,30 +87,32 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             StateRegistry.PacketRegistry registry = direction == PacketDirection.SERVERBOUND ?
                 (StateRegistry.PacketRegistry) serverboundField.get(stateRegistry) :
                 (StateRegistry.PacketRegistry) clientboundField.get(stateRegistry);
-            Class<? extends MinecraftPacket> velocityPacket = generateVelocityPacket(packetClass);
-            List<StateRegistry.PacketMapping> velocityMappings = new ArrayList<>();
-
             final int maximumProtocolVersion = ProtocolVersion.MAXIMUM_VERSION.getProtocol();
             var sortedMappings = mappings.stream()
                 .filter(mapping -> maximumProtocolVersion >= mapping.protocolRangeStart())
                 .sorted(Comparator.comparingInt(ProtocolMapping::protocolRangeEnd))
                 .toArray(ProtocolIdMapping[]::new);
+            if (sortedMappings.length == 0) {
+                log.debug("No mappings for {} supported by this velocity version. Skipping...", packetClass.getName());
+                return;
+            }
+            Class<? extends MinecraftPacket> velocityPacket = generateVelocityPacket(packetClass);
 
+            // Velocity uses a mapping until the next mapping starts. Mappings with gaps between them (like 1.8 and 1.21+)
+            // have to be registered separately so the unsupported versions in between do not get a mapping.
+            List<StateRegistry.PacketMapping> velocityMappings = new ArrayList<>();
             for (int i = 0; i < sortedMappings.length; i++) {
                 var mapping = sortedMappings[i];
                 mappingProvider.registerMapping(new RegisteredPacket(direction, packetClass), mapping);
                 if (mapping.protocolRangeEnd() > maximumProtocolVersion) {
                     mapping.protocolRangeEnd(maximumProtocolVersion);
                 }
-                velocityMappings.add(createVelocityMapping(mapping.protocolRangeStart(), mapping.protocolRangeEnd(), mapping.id(), i == sortedMappings.length - 1));
-            }
-            try {
-                doRegisterPacket(registry, velocityPacket, velocityMappings.toArray(new StateRegistry.PacketMapping[0]));
-            } catch (InvocationTargetException e) {
-                if (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("already registered")) {
-                    log.debug("{}. Skipping...", e.getCause().getMessage());
-                } else {
-                    throw e;
+                boolean lastOfRun = i == sortedMappings.length - 1
+                    || !isDirectSuccessor(mapping.protocolRangeEnd(), sortedMappings[i + 1].protocolRangeStart());
+                velocityMappings.add(createVelocityMapping(mapping.protocolRangeStart(), mapping.protocolRangeEnd(), mapping.id(), lastOfRun));
+                if (lastOfRun) {
+                    registerVelocityMappings(registry, velocityPacket, velocityMappings);
+                    velocityMappings.clear();
                 }
             }
         } catch (Exception exception) {
@@ -124,6 +126,32 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
         for (ProtocolIdMapping mapping : type.getMappings()) {
             mappingProvider.registerMapping(type, mapping);
         }
+    }
+
+    private void registerVelocityMappings(StateRegistry.PacketRegistry registry, Class<? extends MinecraftPacket> velocityPacket,
+                                          List<StateRegistry.PacketMapping> mappings) throws InvocationTargetException, IllegalAccessException {
+        try {
+            doRegisterPacket(registry, velocityPacket, mappings.toArray(new StateRegistry.PacketMapping[0]));
+        } catch (InvocationTargetException e) {
+            if (e.getCause() != null && e.getCause().getMessage() != null && e.getCause().getMessage().contains("already registered")) {
+                log.debug("{}. Skipping...", e.getCause().getMessage());
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    /**
+     * @return true if there is no other velocity supported protocol version between the given versions
+     */
+    private boolean isDirectSuccessor(int protocolVersion, int nextProtocolVersion) {
+        ProtocolVersion version = ProtocolVersion.getProtocolVersion(protocolVersion);
+        ProtocolVersion next = ProtocolVersion.getProtocolVersion(nextProtocolVersion);
+        if (version == ProtocolVersion.UNKNOWN || next == ProtocolVersion.UNKNOWN) {
+            return false;
+        }
+        ProtocolVersion[] versions = ProtocolVersion.values();
+        return version.ordinal() + 1 < versions.length && versions[version.ordinal() + 1] == next;
     }
 
     private void doRegisterPacket(StateRegistry.PacketRegistry registry, Class<? extends MinecraftPacket> velocityPacket,

@@ -22,6 +22,7 @@ public final class Protocolize {
 
     static {
         registerService(MappingProvider.class, new SimpleMappingProvider());
+        registerService(PacketBypassProvider.class, context -> false);
     }
 
     /**
@@ -89,6 +90,16 @@ public final class Protocolize {
      */
     public static ProtocolizePlayerProvider playerProvider() {
         return getService(ProtocolizePlayerProvider.class);
+    }
+
+    /**
+     * This will return the instance of {@link PacketBypassProvider} which can decide whether
+     * Protocolize should bypass processing for certain packets.
+     *
+     * @return The instance of {@link PacketBypassProvider}
+     */
+    public static PacketBypassProvider packetBypassProvider() {
+        return getService(PacketBypassProvider.class);
     }
 
     /**

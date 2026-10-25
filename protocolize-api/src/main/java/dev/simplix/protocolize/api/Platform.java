@@ -7,6 +7,6 @@ package dev.simplix.protocolize.api;
  */
 public enum Platform {
 
-    BUNGEECORD, VELOCITY, OTHER
+    VELOCITY, OTHER
 
 }

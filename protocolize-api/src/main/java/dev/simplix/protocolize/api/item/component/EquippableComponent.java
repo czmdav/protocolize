@@ -42,6 +42,27 @@ public interface EquippableComponent extends StructuredComponent {
 
     void setDamageOnHurt(boolean damageOnHurt);
 
+    /**
+     * @since Minecraft 1.21.5
+     */
+    boolean isEquipOnInteract();
+
+    void setEquipOnInteract(boolean equipOnInteract);
+
+    /**
+     * @since Minecraft 1.21.6
+     */
+    boolean isCanBeSheared();
+
+    void setCanBeSheared(boolean canBeSheared);
+
+    /**
+     * @return The sound played when shearing or null for the default sound. Since Minecraft 1.21.6
+     */
+    SoundEvent getShearingSound();
+
+    void setShearingSound(SoundEvent shearingSound);
+
     static EquippableComponent create(EquipmentSlot equipmentSlot, SoundEvent equipSound, String model, String cameraOverlay, Either<String, List<EntityType>> allowedEntities, boolean dispensable, boolean swappable, boolean damageOnHurt) {
         return Protocolize.getService(EquippableComponent.Factory.class).create(equipmentSlot, equipSound, model, cameraOverlay, allowedEntities, dispensable, swappable, damageOnHurt);
     }

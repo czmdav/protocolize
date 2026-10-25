@@ -13,6 +13,9 @@ import dev.simplix.protocolize.api.Direction;
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.Protocolize;
+import dev.simplix.protocolize.api.player.ProtocolizePlayer;
+import dev.simplix.protocolize.api.providers.ProtocolizePlayerProvider;
+import dev.simplix.protocolize.api.util.PacketBypassContext;
 import dev.simplix.protocolize.api.util.ReflectionUtil;
 import dev.simplix.protocolize.velocity.providers.VelocityPacketListenerProvider;
 import dev.simplix.protocolize.velocity.util.ConversionUtils;
@@ -32,6 +35,7 @@ import java.util.Objects;
 public final class ProtocolizeEncoderChannelHandler extends MessageToMessageEncoder<MinecraftPacket> {
 
     private static final VelocityPacketListenerProvider LISTENER_PROVIDER = (VelocityPacketListenerProvider) Protocolize.listenerProvider();
+    private static final ProtocolizePlayerProvider PLAYER_PROVIDER = Protocolize.playerProvider();
     private static final Field CONNECTION_FIELD = ReflectionUtil.fieldOrNull(InitialInboundConnection.class, "connection", true);
 
     private final Direction streamDirection;
@@ -74,11 +78,42 @@ public final class ProtocolizeEncoderChannelHandler extends MessageToMessageEnco
     protected void encode(ChannelHandlerContext ctx, MinecraftPacket msg, List<Object> out) throws Exception {
         if (msg != null) {
             try {
-                msg = LISTENER_PROVIDER.handleOutboundPacket(msg, inboundConnection, serverConnection);
+                if (!shouldBypass(msg)) {
+                    msg = LISTENER_PROVIDER.handleOutboundPacket(msg, inboundConnection, serverConnection);
+                }
                 out.add(Objects.requireNonNullElseGet(msg, KeepAlivePacket::new));
             } finally {
                 ReferenceCountUtil.retain(msg);
             }
+        }
+    }
+
+    private boolean shouldBypass(MinecraftPacket minecraftPacket) {
+        try {
+            ProtocolizePlayer protocolizePlayer = null;
+            Object serverInfo = null;
+
+            if (serverConnection != null) {
+                var player = serverConnection.getPlayer();
+                protocolizePlayer = player != null ? PLAYER_PROVIDER.player(player.getUniqueId()) : null;
+                serverInfo = serverConnection.getServerInfo();
+            } else if (inboundConnection instanceof com.velocitypowered.api.proxy.Player) {
+                var player = (com.velocitypowered.api.proxy.Player) inboundConnection;
+                protocolizePlayer = PLAYER_PROVIDER.player(player.getUniqueId());
+                serverInfo = player.getCurrentServer().isPresent() ? player.getCurrentServer().get().getServerInfo() : null;
+            }
+
+            PacketBypassContext c = new PacketBypassContext(
+                streamDirection,
+                packetDirection,
+                protocolVersion != null ? protocolVersion.getProtocol() : 0,
+                protocolizePlayer,
+                serverInfo,
+                minecraftPacket.getClass()
+            );
+            return Protocolize.packetBypassProvider() != null && Protocolize.packetBypassProvider().shouldBypass(c);
+        } catch (Throwable ignored) {
+            return false;
         }
     }
 

@@ -1,5 +1,6 @@
 package dev.simplix.protocolize.api.item;
 
+import dev.simplix.protocolize.api.chat.ChatElement;
 import dev.simplix.protocolize.data.AttributeType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,17 @@ public class Attribute {
     private AttributeModifier modifier;
     private EquipmentSlotGroup slot;
 
+    /**
+     * How the modifier is displayed in the tooltip. Null means the default display.
+     *
+     * @since Minecraft 1.21.6
+     */
+    private Display display;
+
+    public Attribute(AttributeType type, UUID uuid, AttributeModifier modifier, EquipmentSlotGroup slot) {
+        this(type, uuid, modifier, slot, null);
+    }
+
     /* These may change in the future */
     public enum EquipmentSlotGroup {
         /* BY ID */
@@ -29,7 +41,11 @@ public class Attribute {
         CHEST,
         HEAD,
         ARMOR,
-        BODY;
+        BODY,
+        /**
+         * @since Minecraft 1.21.5
+         */
+        SADDLE;
     }
 
     @Data
@@ -46,6 +62,26 @@ public class Attribute {
             ADD_VALUE,
             ADD_MULTIPLIED_BASE,
             ADD_MULTIPLIED_TOTAL
+        }
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Display {
+
+        private Type type;
+        /**
+         * The text replacing the modifier line. Only used for {@link Type#OVERRIDE}.
+         */
+        private ChatElement<?> text;
+
+        /* BY ID */
+        public enum Type {
+            DEFAULT,
+            HIDDEN,
+            OVERRIDE
         }
 
     }
