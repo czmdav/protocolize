@@ -58,7 +58,8 @@ public class ClickWindow extends AbstractPacket {
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_20_2, MINECRAFT_1_20_4, 0x0D),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_20_5, MINECRAFT_1_21, 0x0E),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_2, MINECRAFT_1_21_5, 0x10),
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_6, MINECRAFT_LATEST, 0x11)
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_6, MINECRAFT_1_21_11, 0x11),
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_26_1, MINECRAFT_26_3, 0x12)
     );
 
     private Map<Short, Either<ItemStack, HashedStack>> slotData = new HashMap<>();

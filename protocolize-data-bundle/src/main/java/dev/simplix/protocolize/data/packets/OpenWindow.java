@@ -57,7 +57,10 @@ public class OpenWindow extends AbstractPacket {
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_20_2, MINECRAFT_1_20_4, 0x31),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_20_5, MINECRAFT_1_21, 0x33),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_2, MINECRAFT_1_21_4, 0x35),
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_5, MINECRAFT_LATEST, 0x34)
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_5, MINECRAFT_1_21_8, 0x34),
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_9, MINECRAFT_1_21_11, 0x39),
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_26_1, MINECRAFT_26_2, 0x3B),
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_26_3, MINECRAFT_26_3, 0x3C)
     );
 
     public OpenWindow(int windowId, InventoryType inventoryType, ChatElement<?> title) {

@@ -59,7 +59,10 @@ public class SoundEffect extends AbstractPacket {
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_20_3, MINECRAFT_1_20_4, 0x66),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_20_5, MINECRAFT_1_21, 0x68),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_2, MINECRAFT_1_21_4, 0x6F),
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_5, MINECRAFT_LATEST, 0x6E)
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_5, MINECRAFT_1_21_8, 0x6E),
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_9, MINECRAFT_1_21_11, 0x73),
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_26_1, MINECRAFT_26_2, 0x75),
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_26_3, MINECRAFT_26_3, 0x77)
     );
 
     @Setter(AccessLevel.NONE)

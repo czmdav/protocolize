@@ -57,7 +57,8 @@ public class BlockPlacement extends AbstractPacket {
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_2, MINECRAFT_1_21_3, 0x3A),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_4, MINECRAFT_1_21_4, 0x3C),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_5, MINECRAFT_1_21_5, 0x3E),
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_6, MINECRAFT_LATEST, 0x3F)
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_6, MINECRAFT_1_21_11, 0x3F),
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_26_1, MINECRAFT_26_3, 0x42)
     );
 
     private BlockPosition position;

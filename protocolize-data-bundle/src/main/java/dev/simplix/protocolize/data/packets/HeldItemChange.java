@@ -51,7 +51,7 @@ public class HeldItemChange extends AbstractPacket {
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_6, MINECRAFT_1_21_7, 0x62),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_9, MINECRAFT_1_21_11, 0x67),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_26_1, MINECRAFT_26_2, 0x69),
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_26_3, MINECRAFT_LATEST, 0x6B)
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_26_3, MINECRAFT_26_3, 0x6B)
     );
 
     public static final List<ProtocolIdMapping> SERVERBOUND_MAPPINGS = Arrays.asList(
@@ -72,7 +72,7 @@ public class HeldItemChange extends AbstractPacket {
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_4, MINECRAFT_1_21_5, 0x33),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_6, MINECRAFT_1_21_11, 0x34),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_26_1, MINECRAFT_26_2, 0x35),
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_26_3, MINECRAFT_LATEST, 0x36)
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_26_3, MINECRAFT_26_3, 0x36)
     );
 
     private short newSlot;
