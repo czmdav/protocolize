@@ -73,22 +73,9 @@ public final class ProtocolVersions {
     public final static int MINECRAFT_26_1_2 = MINECRAFT_26_1;
     public final static int MINECRAFT_26_2 = 776;
     public final static int MINECRAFT_26_3 = 777;
-
-    /**
-     * The oldest supported modern protocol version. Versions between {@link #MINECRAFT_1_8} and this one are not supported.
-     */
-    public final static int MINECRAFT_OLDEST_MODERN = MINECRAFT_1_21;
     public final static int MINECRAFT_LATEST = MINECRAFT_26_3;
 
     private ProtocolVersions() {
-    }
-
-    /**
-     * @param protocolVersion the protocol version to check
-     * @return true if protocolize supports the given protocol version
-     */
-    public static boolean isSupported(int protocolVersion) {
-        return protocolVersion == MINECRAFT_1_8 || (protocolVersion >= MINECRAFT_OLDEST_MODERN && protocolVersion <= MINECRAFT_LATEST);
     }
 
 }

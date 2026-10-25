@@ -126,16 +126,10 @@ public class ProtocolizePlugin {
         }).orElse(null));
 
         Protocolize.playerProvider().onConstruct(protocolizePlayer -> {
-            Player player = protocolizePlayer.handle();
-            if (!ProtocolVersions.isSupported(protocolizePlayer.protocolVersion())) {
-                logger.warn("=== WARNING ===");
-                logger.warn("The player {} is using {} which is not supported by protocolize. Supported are 1.8.x (with the legacy module) and 1.21 - 26.3.",
-                    player.getUsername(), player.getProtocolVersion().getMostRecentSupportedVersion());
-                return;
-            }
             if (Protocolize.getService(ModuleProvider.class).moduleInstalled("LegacyModule")) {
                 return;
             }
+            Player player = protocolizePlayer.handle();
             if (protocolizePlayer.protocolVersion() < ProtocolVersions.MINECRAFT_1_13) {
                 logger.warn("=== WARNING ===");
                 logger.warn("The player {} is using {} which is not supported by protocolize by default.", player.getUsername(), player.getProtocolVersion().getMostRecentSupportedVersion());
