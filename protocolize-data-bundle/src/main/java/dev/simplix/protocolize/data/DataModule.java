@@ -230,6 +230,7 @@ public class DataModule implements ProtocolizeModule {
         registrationProvider.registerPacket(PlayerPosition.MAPPINGS, Protocol.PLAY, PacketDirection.SERVERBOUND, PlayerPosition.class);
         registrationProvider.registerPacket(PlayerPositionLook.MAPPINGS, Protocol.PLAY, PacketDirection.SERVERBOUND, PlayerPositionLook.class);
         registrationProvider.registerPacket(PlayerLook.MAPPINGS, Protocol.PLAY, PacketDirection.SERVERBOUND, PlayerLook.class);
+        registrationProvider.registerPacket(PlayerStatusOnly.MAPPINGS, Protocol.PLAY, PacketDirection.SERVERBOUND, PlayerStatusOnly.class);
 
         // DATA COMPONENTS
         Protocolize.registerService(ArmorTrimComponent.Factory.class, ArmorTrimComponentImpl.Type.INSTANCE);
