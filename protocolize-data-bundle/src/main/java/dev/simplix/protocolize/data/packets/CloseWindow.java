@@ -59,7 +59,8 @@ public class CloseWindow extends AbstractPacket {
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_20_2, MINECRAFT_1_20_4, 0x0E),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_20_5, MINECRAFT_1_21, 0x0F),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_2, MINECRAFT_1_21_5, 0x11),
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_6, MINECRAFT_26_3, 0x12)
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_21_6, MINECRAFT_1_21_11, 0x12),
+        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_26_1, MINECRAFT_26_3, 0x13)
     );
 
     private int windowId;
