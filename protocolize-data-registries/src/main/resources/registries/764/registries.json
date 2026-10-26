@@ -1406,7 +1406,7 @@
       "minecraft:granite_wall": {
         "protocol_id": 763
       },
-      "minecraft:short_grass": {
+      "minecraft:grass": {
         "protocol_id": 123
       },
       "minecraft:grass_block": {
@@ -6328,7 +6328,7 @@
       "minecraft:granite_wall": {
         "protocol_id": 381
       },
-      "minecraft:short_grass": {
+      "minecraft:grass": {
         "protocol_id": 173
       },
       "minecraft:grass_block": {
@@ -7822,7 +7822,7 @@
       "minecraft:sculk_vein": {
         "protocol_id": 350
       },
-      "minecraft:turtle_scute": {
+      "minecraft:scute": {
         "protocol_id": 757
       },
       "minecraft:sea_lantern": {
@@ -12805,6 +12805,9 @@
       "minecraft:entity.goat.screaming.eat": {
         "protocol_id": 561
       },
+      "minecraft:entity.goat.screaming.horn_break": {
+        "protocol_id": 567
+      },
       "minecraft:entity.goat.screaming.hurt": {
         "protocol_id": 562
       },
@@ -14328,6 +14331,9 @@
       },
       "minecraft:item.glow_ink_sac.use": {
         "protocol_id": 539
+      },
+      "minecraft:item.goat_horn.play": {
+        "protocol_id": 558
       },
       "minecraft:item.goat_horn.sound.0": {
         "protocol_id": 626

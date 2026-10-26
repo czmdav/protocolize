@@ -1400,7 +1400,7 @@
       "minecraft:granite_wall": {
         "protocol_id": 759
       },
-      "minecraft:short_grass": {
+      "minecraft:grass": {
         "protocol_id": 122
       },
       "minecraft:grass_block": {
@@ -6149,7 +6149,7 @@
       "minecraft:granite_wall": {
         "protocol_id": 379
       },
-      "minecraft:short_grass": {
+      "minecraft:grass": {
         "protocol_id": 172
       },
       "minecraft:grass_block": {
@@ -7286,16 +7286,16 @@
       "minecraft:potion": {
         "protocol_id": 953
       },
-      "minecraft:angler_pottery_sherd": {
+      "minecraft:pottery_shard_archer": {
         "protocol_id": 1224
       },
-      "minecraft:arms_up_pottery_sherd": {
+      "minecraft:pottery_shard_arms_up": {
         "protocol_id": 1226
       },
-      "minecraft:prize_pottery_sherd": {
+      "minecraft:pottery_shard_prize": {
         "protocol_id": 1225
       },
-      "minecraft:skull_pottery_sherd": {
+      "minecraft:pottery_shard_skull": {
         "protocol_id": 1227
       },
       "minecraft:powder_snow_bucket": {
@@ -7619,7 +7619,7 @@
       "minecraft:sculk_vein": {
         "protocol_id": 348
       },
-      "minecraft:turtle_scute": {
+      "minecraft:scute": {
         "protocol_id": 753
       },
       "minecraft:sea_lantern": {
@@ -12492,6 +12492,9 @@
       "minecraft:entity.goat.screaming.eat": {
         "protocol_id": 552
       },
+      "minecraft:entity.goat.screaming.horn_break": {
+        "protocol_id": 558
+      },
       "minecraft:entity.goat.screaming.hurt": {
         "protocol_id": 553
       },
@@ -13911,10 +13914,10 @@
       "minecraft:item.bottle.fill_dragonbreath": {
         "protocol_id": 164
       },
-      "minecraft:item.brush.brushing.sand.complete": {
+      "minecraft:item.brush.brush_sand_completed": {
         "protocol_id": 167
       },
-      "minecraft:item.brush.brushing.generic": {
+      "minecraft:item.brush.brushing": {
         "protocol_id": 166
       },
       "minecraft:item.bucket.empty": {
@@ -14006,6 +14009,9 @@
       },
       "minecraft:item.glow_ink_sac.use": {
         "protocol_id": 530
+      },
+      "minecraft:item.goat_horn.play": {
+        "protocol_id": 549
       },
       "minecraft:item.goat_horn.sound.0": {
         "protocol_id": 617
@@ -14142,10 +14148,7 @@
       "minecraft:music.overworld.jagged_peaks": {
         "protocol_id": 801
       },
-      "minecraft:music.overworld.jungle": {
-        "protocol_id": 804
-      },
-      "minecraft:music.overworld.forest": {
+      "minecraft:music.overworld.jungle_and_forest": {
         "protocol_id": 804
       },
       "minecraft:music.overworld.lush_caves": {

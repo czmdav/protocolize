@@ -4183,7 +4183,7 @@
       "minecraft:cobweb": {
         "protocol_id": 100
       },
-      "minecraft:short_grass": {
+      "minecraft:grass": {
         "protocol_id": 101
       },
       "minecraft:fern": {
@@ -7494,7 +7494,7 @@
       "minecraft:cobweb": {
         "protocol_id": 149
       },
-      "minecraft:short_grass": {
+      "minecraft:grass": {
         "protocol_id": 150
       },
       "minecraft:fern": {
@@ -9081,7 +9081,7 @@
       "minecraft:turtle_helmet": {
         "protocol_id": 678
       },
-      "minecraft:turtle_scute": {
+      "minecraft:scute": {
         "protocol_id": 679
       },
       "minecraft:flint_and_steel": {

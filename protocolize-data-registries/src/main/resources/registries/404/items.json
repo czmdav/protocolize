@@ -227,7 +227,7 @@
     "minecraft:cobweb": {
         "protocol_id": 75
     },
-    "minecraft:short_grass": {
+    "minecraft:grass": {
         "protocol_id": 76
     },
     "minecraft:fern": {
@@ -911,7 +911,7 @@
     "minecraft:slime_block": {
         "protocol_id": 303
     },
-    "minecraft:dirt_path": {
+    "minecraft:grass_path": {
         "protocol_id": 304
     },
     "minecraft:sunflower": {
@@ -1412,7 +1412,7 @@
     "minecraft:turtle_helmet": {
         "protocol_id": 470
     },
-    "minecraft:turtle_scute": {
+    "minecraft:scute": {
         "protocol_id": 471
     },
     "minecraft:iron_shovel": {
@@ -1622,7 +1622,7 @@
     "minecraft:enchanted_golden_apple": {
         "protocol_id": 540
     },
-    "minecraft:oak_sign": {
+    "minecraft:sign": {
         "protocol_id": 541
     },
     "minecraft:bucket": {
@@ -1733,10 +1733,10 @@
     "minecraft:ink_sac": {
         "protocol_id": 577
     },
-    "minecraft:red_dye": {
+    "minecraft:rose_red": {
         "protocol_id": 578
     },
-    "minecraft:green_dye": {
+    "minecraft:cactus_green": {
         "protocol_id": 579
     },
     "minecraft:cocoa_beans": {
@@ -1763,7 +1763,7 @@
     "minecraft:lime_dye": {
         "protocol_id": 587
     },
-    "minecraft:yellow_dye": {
+    "minecraft:dandelion_yellow": {
         "protocol_id": 588
     },
     "minecraft:light_blue_dye": {
@@ -2063,7 +2063,7 @@
     "minecraft:zombie_horse_spawn_egg": {
         "protocol_id": 687
     },
-    "minecraft:zombified_piglin_spawn_egg": {
+    "minecraft:zombie_pigman_spawn_egg": {
         "protocol_id": 688
     },
     "minecraft:zombie_villager_spawn_egg": {

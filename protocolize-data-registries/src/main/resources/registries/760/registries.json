@@ -1268,7 +1268,7 @@
       "minecraft:granite_wall": {
         "protocol_id": 696
       },
-      "minecraft:short_grass": {
+      "minecraft:grass": {
         "protocol_id": 110
       },
       "minecraft:grass_block": {
@@ -5754,7 +5754,7 @@
       "minecraft:granite_wall": {
         "protocol_id": 355
       },
-      "minecraft:short_grass": {
+      "minecraft:grass": {
         "protocol_id": 160
       },
       "minecraft:grass_block": {
@@ -7188,7 +7188,7 @@
       "minecraft:sculk_vein": {
         "protocol_id": 327
       },
-      "minecraft:turtle_scute": {
+      "minecraft:scute": {
         "protocol_id": 715
       },
       "minecraft:sea_lantern": {
@@ -11617,6 +11617,9 @@
       "minecraft:entity.goat.screaming.eat": {
         "protocol_id": 474
       },
+      "minecraft:entity.goat.screaming.horn_break": {
+        "protocol_id": 480
+      },
       "minecraft:entity.goat.screaming.hurt": {
         "protocol_id": 475
       },
@@ -13087,6 +13090,9 @@
       "minecraft:item.glow_ink_sac.use": {
         "protocol_id": 452
       },
+      "minecraft:item.goat_horn.play": {
+        "protocol_id": 471
+      },
       "minecraft:item.goat_horn.sound.0": {
         "protocol_id": 524
       },
@@ -13219,10 +13225,7 @@
       "minecraft:music.overworld.jagged_peaks": {
         "protocol_id": 703
       },
-      "minecraft:music.overworld.jungle": {
-        "protocol_id": 706
-      },
-      "minecraft:music.overworld.forest": {
+      "minecraft:music.overworld.jungle_and_forest": {
         "protocol_id": 706
       },
       "minecraft:music.overworld.lush_caves": {
