@@ -700,6 +700,49 @@
       }
     }
   },
+  "minecraft:cat_sound_variant": {
+    "entries": {
+      "minecraft:classic": {
+        "protocol_id": 0
+      },
+      "minecraft:royal": {
+        "protocol_id": 1
+      }
+    }
+  },
+  "minecraft:chicken_sound_variant": {
+    "entries": {
+      "minecraft:classic": {
+        "protocol_id": 0
+      },
+      "minecraft:picky": {
+        "protocol_id": 1
+      }
+    }
+  },
+  "minecraft:cow_sound_variant": {
+    "entries": {
+      "minecraft:classic": {
+        "protocol_id": 0
+      },
+      "minecraft:moody": {
+        "protocol_id": 1
+      }
+    }
+  },
+  "minecraft:pig_sound_variant": {
+    "entries": {
+      "minecraft:classic": {
+        "protocol_id": 0
+      },
+      "minecraft:big": {
+        "protocol_id": 1
+      },
+      "minecraft:mini": {
+        "protocol_id": 2
+      }
+    }
+  },
   "minecraft:fox_variant": {
     "entries": {
       "minecraft:red": {

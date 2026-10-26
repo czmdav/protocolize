@@ -108,6 +108,12 @@ public class DataModule implements ProtocolizeModule {
                 registerIdMappings(registries.villagerTypeRegistry().entries(), provider, protocolVersion, VillagerType.class);
                 registerIdMappings(registries.wolfVariantRegistry().entries(), provider, protocolVersion, WolfVariant.class);
                 registerIdMappings(registries.wolfSoundVariantRegistry().entries(), provider, protocolVersion, WolfSoundVariant.class);
+                if(registries.catSoundVariantRegistry() != null) { // only present in the 26.x registries
+                    registerIdMappings(registries.catSoundVariantRegistry().entries(), provider, protocolVersion, CatSoundVariant.class);
+                    registerIdMappings(registries.chickenSoundVariantRegistry().entries(), provider, protocolVersion, ChickenSoundVariant.class);
+                    registerIdMappings(registries.cowSoundVariantRegistry().entries(), provider, protocolVersion, CowSoundVariant.class);
+                    registerIdMappings(registries.pigSoundVariantRegistry().entries(), provider, protocolVersion, PigSoundVariant.class);
+                }
             }
             registerStringMappings(registries.soundRegistry().entries(), provider, protocolVersion, Sound.class);
         } catch (Exception e) {
@@ -538,6 +544,7 @@ public class DataModule implements ProtocolizeModule {
 
         Protocolize.registerService(VillagerVariantComponent.Factory.class, VillagerVariantComponentImpl.Type.INSTANCE);
         registrationProvider.registerDataComponentType(VillagerVariantComponentImpl.Type.INSTANCE);
+
 
         Protocolize.registerService(WeaponComponent.Factory.class, WeaponComponentImpl.Type.INSTANCE);
         registrationProvider.registerDataComponentType(WeaponComponentImpl.Type.INSTANCE);

@@ -71,6 +71,18 @@ public class Registries {
     @SerializedName("minecraft:wolf_sound_variant")
     private GenericRegistry wolfSoundVariantRegistry;
 
+    @SerializedName("minecraft:cat_sound_variant")
+    private GenericRegistry catSoundVariantRegistry;
+
+    @SerializedName("minecraft:chicken_sound_variant")
+    private GenericRegistry chickenSoundVariantRegistry;
+
+    @SerializedName("minecraft:cow_sound_variant")
+    private GenericRegistry cowSoundVariantRegistry;
+
+    @SerializedName("minecraft:pig_sound_variant")
+    private GenericRegistry pigSoundVariantRegistry;
+
     @SerializedName("minecraft:fox_variant")
     private GenericRegistry foxVariantRegistry;
 
