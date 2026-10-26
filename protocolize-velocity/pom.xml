@@ -73,6 +73,26 @@
         </resources>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.1</version>
+                <configuration>
+                    <!-- Velocity's @Plugin annotation processor generates velocity-plugin.json -->
+                    <annotationProcessorPaths combine.self="override">
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.38</version>
+                        </path>
+                        <path>
+                            <groupId>com.velocitypowered</groupId>
+                            <artifactId>velocity-proxy</artifactId>
+                            <version>${velocity.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>templating-maven-plugin</artifactId>
                 <version>1.0.0</version>
