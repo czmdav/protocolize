@@ -11,7 +11,13 @@ public interface DataComponentType<T extends DataComponent> {
     String getName();
 
     default dev.simplix.protocolize.data.DataComponentType getDataComponentType() {
-        return dev.simplix.protocolize.data.DataComponentType.valueOf(ProtocolUtil.removeNamespace(getName().toUpperCase()));
+        String name = ProtocolUtil.removeNamespace(getName().toUpperCase());
+        try {
+            return dev.simplix.protocolize.data.DataComponentType.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            // Component was removed from the latest registry and only exists as a LEGACY_ constant
+            return dev.simplix.protocolize.data.DataComponentType.valueOf("LEGACY_" + name);
+        }
     }
 
     default List<ProtocolIdMapping> getMappings() {
