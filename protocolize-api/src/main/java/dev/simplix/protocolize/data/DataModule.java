@@ -359,6 +359,12 @@ public class DataModule implements ProtocolizeModule {
         Protocolize.registerService(DyedColorComponent.Factory.class, DyedColorComponentImpl.Type.INSTANCE);
         registrationProvider.registerDataComponentType(DyedColorComponentImpl.Type.INSTANCE);
 
+        Protocolize.registerService(DyeComponent.Factory.class, DyeComponentImpl.Type.INSTANCE);
+        registrationProvider.registerDataComponentType(DyeComponentImpl.Type.INSTANCE);
+
+        Protocolize.registerService(CushionColorComponent.Factory.class, CushionColorComponentImpl.Type.INSTANCE);
+        registrationProvider.registerDataComponentType(CushionColorComponentImpl.Type.INSTANCE);
+
         Protocolize.registerService(EnchantableComponent.Factory.class, EnchantableComponentImpl.Type.INSTANCE);
         registrationProvider.registerDataComponentType(EnchantableComponentImpl.Type.INSTANCE);
 
@@ -542,8 +548,14 @@ public class DataModule implements ProtocolizeModule {
         Protocolize.registerService(UseRemainderComponent.Factory.class, UseRemainderComponentImpl.Type.INSTANCE);
         registrationProvider.registerDataComponentType(UseRemainderComponentImpl.Type.INSTANCE);
 
+        Protocolize.registerService(VillagerFoodComponent.Factory.class, VillagerFoodComponentImpl.Type.INSTANCE);
+        registrationProvider.registerDataComponentType(VillagerFoodComponentImpl.Type.INSTANCE);
+
         Protocolize.registerService(VillagerVariantComponent.Factory.class, VillagerVariantComponentImpl.Type.INSTANCE);
         registrationProvider.registerDataComponentType(VillagerVariantComponentImpl.Type.INSTANCE);
+
+        Protocolize.registerService(WaxedComponent.Factory.class, WaxedComponentImpl.Type.INSTANCE);
+        registrationProvider.registerDataComponentType(WaxedComponentImpl.Type.INSTANCE);
 
 
         Protocolize.registerService(WeaponComponent.Factory.class, WeaponComponentImpl.Type.INSTANCE);
