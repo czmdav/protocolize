@@ -1,7 +1,6 @@
 package dev.simplix.protocolize.api.item.component;
 
 import dev.simplix.protocolize.api.Protocolize;
-import dev.simplix.protocolize.data.DataComponentType;
 
 import java.util.List;
 
@@ -19,17 +18,17 @@ public interface TooltipDisplayComponent extends DataComponent {
     /**
      * @return The data component types whose tooltip lines are hidden
      */
-    List<DataComponentType> getHiddenComponents();
+    List<DataComponentType<?>> getHiddenComponents();
 
-    void setHiddenComponents(List<DataComponentType> hiddenComponents);
+    void setHiddenComponents(List<DataComponentType<?>> hiddenComponents);
 
-    static TooltipDisplayComponent create(boolean hideTooltip, List<DataComponentType> hiddenComponents) {
+    static TooltipDisplayComponent create(boolean hideTooltip, List<DataComponentType<?>> hiddenComponents) {
         return Protocolize.getService(Factory.class).create(hideTooltip, hiddenComponents);
     }
 
     interface Factory {
 
-        TooltipDisplayComponent create(boolean hideTooltip, List<DataComponentType> hiddenComponents);
+        TooltipDisplayComponent create(boolean hideTooltip, List<DataComponentType<?>> hiddenComponents);
 
     }
 

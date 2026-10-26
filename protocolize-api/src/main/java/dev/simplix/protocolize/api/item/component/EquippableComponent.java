@@ -1,8 +1,8 @@
 package dev.simplix.protocolize.api.item.component;
 
 import dev.simplix.protocolize.api.Protocolize;
-import dev.simplix.protocolize.api.item.EquipmentSlot;
-import dev.simplix.protocolize.api.item.SoundEvent;
+import dev.simplix.protocolize.api.item.enums.EquipmentSlot;
+import dev.simplix.protocolize.api.item.objects.SoundEvent;
 import dev.simplix.protocolize.api.util.Either;
 import dev.simplix.protocolize.data.EntityType;
 

@@ -46,7 +46,7 @@
         <dependency>
             <groupId>dev.simplix</groupId>
             <artifactId>protocolize-api</artifactId>
-            <version>3.0.0</version>
+            <version>${data.version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -72,6 +72,19 @@
             </resource>
         </resources>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>templating-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <id>filter-src</id>
+                        <goals>
+                            <goal>filter-sources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.6.0</version>

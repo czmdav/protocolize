@@ -8,7 +8,7 @@ import com.velocitypowered.proxy.protocol.StateRegistry;
 import dev.simplix.protocolize.api.PacketDirection;
 import dev.simplix.protocolize.api.Protocol;
 import dev.simplix.protocolize.api.Protocolize;
-import dev.simplix.protocolize.api.item.component.StructuredComponentType;
+import dev.simplix.protocolize.api.item.component.DataComponentType;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
 import dev.simplix.protocolize.api.mapping.ProtocolMapping;
 import dev.simplix.protocolize.api.packet.AbstractPacket;
@@ -121,7 +121,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
     }
 
     @Override
-    public void registerItemStructuredComponentType(StructuredComponentType<?> type) {
+    public void registerDataComponentType(DataComponentType<?> type) {
         Preconditions.checkNotNull(type, "Type cannot be null");
         for (ProtocolIdMapping mapping : type.getMappings()) {
             mappingProvider.registerMapping(type, mapping);
