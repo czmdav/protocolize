@@ -15,6 +15,7 @@ import com.velocitypowered.proxy.network.ConnectionManager;
 import dev.simplix.protocolize.api.PlatformInitializer;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.providers.*;
+import dev.simplix.protocolize.api.util.DebugUtil;
 import dev.simplix.protocolize.api.util.ProtocolVersions;
 import dev.simplix.protocolize.api.util.SkullProfileResolver;
 import dev.simplix.protocolize.velocity.commands.ProtocolizeCommand;
@@ -34,6 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Date: 22.08.2021
@@ -102,6 +104,8 @@ public class ProtocolizePlugin {
     public void onInit(ProxyInitializeEvent event) throws ReflectiveOperationException {
         logger.info("======= PROTOCOLIZE =======");
         logger.info("Version {} by {}", version(), String.join(", ", description().getAuthors()));
+        if(DebugUtil.enabled || DebugUtil.logComponents)
+            logger.info("DEBUG -> Enabled:{} | Unzipped:{} | Components:{}", DebugUtil.enabled, DebugUtil.unzipped, DebugUtil.logComponents);
         if (version().endsWith(":unknown")) {
             logger.warn("WARNING: YOU ARE RUNNING AN UNOFFICIAL BUILD OF PROTOCOLIZE. DON'T REPORT ANY BUGS REGARDING THIS VERSION.");
         }

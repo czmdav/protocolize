@@ -8,7 +8,7 @@ import dev.simplix.protocolize.data.EntityType;
 
 import java.util.List;
 
-public interface EquippableComponent extends StructuredComponent {
+public interface EquippableComponent extends DataComponent {
 
     EquipmentSlot getSlot();
 

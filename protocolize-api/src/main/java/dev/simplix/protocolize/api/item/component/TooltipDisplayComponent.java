@@ -10,7 +10,7 @@ import java.util.List;
  * {@link HideAdditionalTooltipComponent} and the {@code showInTooltip} flags of other components. Protocolize translates
  * these older components into this component for 1.21.5+ clients automatically.
  */
-public interface TooltipDisplayComponent extends StructuredComponent {
+public interface TooltipDisplayComponent extends DataComponent {
 
     boolean isHideTooltip();
 

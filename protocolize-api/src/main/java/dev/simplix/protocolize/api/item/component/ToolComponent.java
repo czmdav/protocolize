@@ -5,7 +5,7 @@ import dev.simplix.protocolize.api.item.ToolRule;
 
 import java.util.List;
 
-public interface ToolComponent extends StructuredComponent {
+public interface ToolComponent extends DataComponent {
 
     List<ToolRule> getRules();
 
