@@ -6,7 +6,7 @@
 
     <groupId>dev.simplix</groupId>
     <artifactId>protocolize</artifactId>
-    <version>2.4.4</version>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
 
     <modules>
