@@ -15,7 +15,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -25,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import static dev.simplix.protocolize.api.util.ProtocolVersions.*;
 
@@ -52,65 +52,45 @@ public class ProtocolizeDataMojo extends AbstractMojo {
     @Override
     public void execute() {
         project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
-        Registries latestRegistries = getRegistry(MINECRAFT_LATEST);
+        List<Registries> versions = latestFirstVersions();
 
         List<Generator> generators = new ArrayList<>(Arrays.asList(
-            new GenericGenerator(outputDirectory, latestRegistries.itemRegistry(), "ItemType"),
-            new GenericGenerator(outputDirectory, latestRegistries.soundRegistry(), "Sound"),
-            new GenericGenerator(outputDirectory, latestRegistries.mobEffectRegistry(), "MobEffect"),
-            new GenericGenerator(outputDirectory, latestRegistries.potionRegistry(), "Potion"),
-            new GenericGenerator(outputDirectory, latestRegistries.attributeRegistry(), "Attribute"),
-            new GenericGenerator(outputDirectory, latestRegistries.consumeEffectTypeRegistry(), "ConsumeEffectType"),
-            new GenericGenerator(outputDirectory, latestRegistries.entityTypeRegistry(), "EntityType"),
-            new GenericGenerator(outputDirectory, latestRegistries.blockRegistry(), "Block"),
-            new GenericGenerator(outputDirectory, latestRegistries.enchantmentRegistry(), "Enchantment"),
-            new GenericGenerator(outputDirectory, latestRegistries.instrumentRegistry(), "Instrument"),
-            new GenericGenerator(outputDirectory, latestRegistries.damageTypeRegistry(), "DamageType"),
-            new GenericGenerator(outputDirectory, latestRegistries.trimMaterialRegistry(), "TrimMaterial"),
-            new GenericGenerator(outputDirectory, latestRegistries.trimPatternRegistry(), "TrimPattern"),
-            new GenericGenerator(outputDirectory, latestRegistries.armorMaterialRegistry(), "ArmorMaterial"),
-            new GenericGenerator(outputDirectory, latestRegistries.bannerPatternRegistry(), "BannerPattern"),
-            new GenericGenerator(outputDirectory, latestRegistries.villagerTypeRegistry(), "VillagerType"),
-            new GenericGenerator(outputDirectory, latestRegistries.wolfVariantRegistry(), "WolfVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.wolfSoundVariantRegistry(), "WolfSoundVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.foxVariantRegistry(), "FoxVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.salmonVariantRegistry(), "SalmonVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.parrotVariantRegistry(), "ParrotVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.tropicalFishPatternRegistry(), "TropicalFishPattern"),
-            new GenericGenerator(outputDirectory, latestRegistries.mooshroomVariantRegistry(), "MooshroomVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.rabbitVariantRegistry(), "RabbitVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.pigVariantRegistry(), "PigVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.cowVariantRegistry(), "CowVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.chickenVariantRegistry(), "ChickenVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.frogVariantRegistry(), "FrogVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.horseVariantRegistry(), "HorseVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.paintingVariantRegistry(), "PaintingVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.llamaVariantRegistry(), "LlamaVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.axolotlVariantRegistry(), "AxolotlVariant"),
-            new GenericGenerator(outputDirectory, latestRegistries.catVariantRegistry(), "CatVariant")
+            new GenericGenerator(outputDirectory, itemRegistries(), "ItemType"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::soundRegistry), "Sound"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::mobEffectRegistry), "MobEffect"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::potionRegistry), "Potion"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::attributeRegistry), "Attribute"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::consumeEffectTypeRegistry), "ConsumeEffectType"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::entityTypeRegistry), "EntityType"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::blockRegistry), "Block"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::enchantmentRegistry), "Enchantment"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::instrumentRegistry), "Instrument"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::damageTypeRegistry), "DamageType"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::trimMaterialRegistry), "TrimMaterial"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::trimPatternRegistry), "TrimPattern"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::armorMaterialRegistry), "ArmorMaterial"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::bannerPatternRegistry), "BannerPattern"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::villagerTypeRegistry), "VillagerType"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::wolfVariantRegistry), "WolfVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::wolfSoundVariantRegistry), "WolfSoundVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::foxVariantRegistry), "FoxVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::salmonVariantRegistry), "SalmonVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::parrotVariantRegistry), "ParrotVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::tropicalFishPatternRegistry), "TropicalFishPattern"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::mooshroomVariantRegistry), "MooshroomVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::rabbitVariantRegistry), "RabbitVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::pigVariantRegistry), "PigVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::cowVariantRegistry), "CowVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::chickenVariantRegistry), "ChickenVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::frogVariantRegistry), "FrogVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::horseVariantRegistry), "HorseVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::paintingVariantRegistry), "PaintingVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::llamaVariantRegistry), "LlamaVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::axolotlVariantRegistry), "AxolotlVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::catVariantRegistry), "CatVariant"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::dataComponentTypeRegistry), "DataComponentType"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::getDataComponentPredicateTypeRegistry), "DataComponentPredicateType")
         ));
-
-
-        /*
-         * This will register all DataComponentType's for all versions 1.20.5-Latest as some were already removed.
-         * It will still use the mapping provider to grab correct versions or warn if they cannot be used on a
-         * specific version.
-         */
-        List<GenericRegistry> dataComponentRegistries = new ArrayList<>();
-        for(Registries registry : getRegistries(MINECRAFT_1_20_5, MINECRAFT_LATEST)){
-            try {
-                dataComponentRegistries.add(registry.dataComponentTypeRegistry());
-            } catch (Exception ignored) { }
-        }
-        generators.add(new GenericGenerator(outputDirectory, dataComponentRegistries, "DataComponentType"));
-
-        List<GenericRegistry> dataComponentPredicateRegistries = new ArrayList<>();
-        for(Registries registry : getRegistries(MINECRAFT_1_21_5, MINECRAFT_LATEST)){
-            try {
-                dataComponentPredicateRegistries.add(registry.getDataComponentPredicateTypeRegistry());
-            } catch (Exception ignored) { }
-        }
-        generators.add(new GenericGenerator(outputDirectory, dataComponentPredicateRegistries, "DataComponentPredicateType"));
 
         for (Generator generator : generators) {
             long now = System.currentTimeMillis();
@@ -120,40 +100,84 @@ public class ProtocolizeDataMojo extends AbstractMojo {
         }
     }
 
+    /**
+     * Registries from the latest version down to 1.13, so the first entry is the most recent definition of each key.
+     */
+    private List<Registries> latestFirstVersions() {
+        List<Registries> versions = new ArrayList<>();
+        for (int version = MINECRAFT_LATEST; version >= MINECRAFT_1_13; version--) {
+            Registries registries = getRegistry(version);
+            if (registries != null) {
+                versions.add(registries);
+            }
+        }
+        return versions;
+    }
+
+    private static List<GenericRegistry> collect(List<Registries> versions, Function<Registries, GenericRegistry> accessor) {
+        List<GenericRegistry> result = new ArrayList<>();
+        for (Registries registries : versions) {
+            GenericRegistry registry = accessor.apply(registries);
+            if (registry != null) {
+                result.add(registry);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 1.13 to 1.14 items have no registries.json, so their items.json is read as the item registry.
+     */
+    private List<GenericRegistry> itemRegistries() {
+        List<GenericRegistry> result = new ArrayList<>();
+        for (int version = MINECRAFT_LATEST; version >= MINECRAFT_1_13; version--) {
+            GenericRegistry registry = itemRegistry(version);
+            if (registry != null) {
+                result.add(registry);
+            }
+        }
+        return result;
+    }
+
+    private GenericRegistry itemRegistry(int protocolVersion) {
+        Registries registries = getRegistry(protocolVersion);
+        if (registries != null && registries.itemRegistry() != null) {
+            return registries.itemRegistry();
+        }
+        File itemsFile = new File(registriesDirectory, protocolVersion + "/items.json");
+        if (!itemsFile.exists()) {
+            return null;
+        }
+        JsonObject wrapper = new JsonObject();
+        wrapper.add("entries", JsonParser.parseString(readFile(itemsFile.getAbsolutePath())));
+        return GSON.fromJson(wrapper, GenericRegistry.class);
+    }
+
     private Registries getRegistry(int protocolVersion) {
         if(parsedRegistries.containsKey(protocolVersion)){
             return parsedRegistries.get(protocolVersion);
-        } else {
-            try {
-                Registries registry;
-                JsonObject minecraftRegistry = JsonParser.parseString(readFile(new File(registriesDirectory, protocolVersion + "/registries.json").getAbsolutePath())).getAsJsonObject();
-                // some items like enchantments, instruments, and damage types are not in the generated registries.json
-                // so we can use an extended.json file for any internal or custom registries and merge them with the unmodified registries.json
-                File extendedRegistryFile = new File(registriesDirectory, protocolVersion + "/extended.json");
-                if(extendedRegistryFile.exists()){
-                    JsonObject extendedRegistry = JsonParser.parseString(readFile(extendedRegistryFile.getAbsolutePath())).getAsJsonObject();
-                    minecraftRegistry = jsonMerge(minecraftRegistry, extendedRegistry);
-                }
-
-                registry = GSON.fromJson(minecraftRegistry, Registries.class);
-                parsedRegistries.put(protocolVersion, registry);
-                return registry;
-            } catch (Exception e){
-                getLog().warn("Failed to get registry for version " + protocolVersion, e);
+        }
+        File registriesFile = new File(registriesDirectory, protocolVersion + "/registries.json");
+        if(!registriesFile.exists()){
+            return null;
+        }
+        try {
+            JsonObject minecraftRegistry = JsonParser.parseString(readFile(registriesFile.getAbsolutePath())).getAsJsonObject();
+            // some items like enchantments, instruments, and damage types are not in the generated registries.json
+            // so we can use an extended.json file for any internal or custom registries and merge them with the unmodified registries.json
+            File extendedRegistryFile = new File(registriesDirectory, protocolVersion + "/extended.json");
+            if(extendedRegistryFile.exists()){
+                JsonObject extendedRegistry = JsonParser.parseString(readFile(extendedRegistryFile.getAbsolutePath())).getAsJsonObject();
+                minecraftRegistry = jsonMerge(minecraftRegistry, extendedRegistry);
             }
+
+            Registries registry = GSON.fromJson(minecraftRegistry, Registries.class);
+            parsedRegistries.put(protocolVersion, registry);
+            return registry;
+        } catch (Exception e){
+            getLog().warn("Failed to get registry for version " + protocolVersion, e);
         }
         return null;
-    }
-
-    private List<Registries> getRegistries(int startVersion, int endVersion) throws FileNotFoundException {
-        List<Registries> registries = new ArrayList<>();
-        for(int i = startVersion; i <= endVersion; i++){
-            Registries registry = getRegistry(i);
-            if(registry != null){
-                registries.add(registry);
-            }
-        }
-        return registries;
     }
 
     private String readFile(String path){

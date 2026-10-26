@@ -41,6 +41,9 @@ import java.util.stream.Collectors;
 @Slf4j(topic = "Protocolize")
 public class DataModule implements ProtocolizeModule {
 
+    // Must match GenericGenerator.LEGACY_PREFIX in protocolize-data-plugin
+    private static final String LEGACY_PREFIX = "LEGACY_";
+
     private final Gson gson = new GsonBuilder().create();
 
     @Override
@@ -157,28 +160,46 @@ public class DataModule implements ProtocolizeModule {
 
     private <T extends Enum<T>> void registerIdMappings(Map<String, RegistryEntry> entries, MappingProvider provider, int protocolVersion, Class<T> enumClass) {
         for (String type : entries.keySet()) {
-            String name = type.substring("minecraft:".length()).replace(".", "_").replace("/", "_").toUpperCase(Locale.ROOT);
-            try {
-                T value = Enum.valueOf(enumClass, name);
-                int id = entries.get(type).protocolId();
-                provider.registerMapping(value, AbstractProtocolMapping.rangedIdMapping(protocolVersion, protocolVersion, id));
-            } catch (IllegalArgumentException e) {
+            String name = constantName(type);
+            T value = findConstant(enumClass, name);
+            if (value == null) {
                 log.warn("Don't know what {}: {} was at protocol {}", enumClass.getSimpleName(), name, protocolVersion);
+                continue;
             }
+            int id = entries.get(type).protocolId();
+            provider.registerMapping(value, AbstractProtocolMapping.rangedIdMapping(protocolVersion, protocolVersion, id));
         }
     }
 
     private <T extends Enum<T>> void registerStringMappings(Map<String, RegistryEntry> entries, MappingProvider provider, int protocolVersion, Class<T> enumClass) {
         for (String type : entries.keySet()) {
-            String name = type.substring("minecraft:".length()).replace(".", "_").replace("/", "_").toUpperCase(Locale.ROOT);
-            try {
-                T value = Enum.valueOf(enumClass, name);
-                int protocolId = entries.get(type).protocolId();
-                provider.registerMapping(value, AbstractProtocolMapping.rangedStringMapping(protocolVersion, protocolVersion, type, protocolId));
-            } catch (IllegalArgumentException e) {
+            String name = constantName(type);
+            T value = findConstant(enumClass, name);
+            if (value == null) {
                 log.warn("Don't know what {}: {} was at protocol {}", enumClass.getSimpleName(), name, protocolVersion);
+                continue;
+            }
+            int protocolId = entries.get(type).protocolId();
+            provider.registerMapping(value, AbstractProtocolMapping.rangedStringMapping(protocolVersion, protocolVersion, type, protocolId));
+        }
+    }
+
+    private static String constantName(String type) {
+        return type.substring("minecraft:".length()).replace(".", "_").replace("/", "_").toUpperCase(Locale.ROOT);
+    }
+
+    /**
+     * Resolves a registry key to its enum constant. Keys missing from the latest registry are generated as LEGACY_ constants.
+     */
+    private static <T extends Enum<T>> T findConstant(Class<T> enumClass, String name) {
+        for (String candidate : new String[]{name, LEGACY_PREFIX + name}) {
+            try {
+                return Enum.valueOf(enumClass, candidate);
+            } catch (IllegalArgumentException ignored) {
+                // not generated under this name, try the next candidate
             }
         }
+        return null;
     }
 
     private static JsonObject jsonMerge(JsonObject jsonA, JsonObject jsonB) {

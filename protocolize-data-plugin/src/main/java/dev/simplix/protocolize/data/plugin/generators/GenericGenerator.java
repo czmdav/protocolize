@@ -10,9 +10,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class GenericGenerator implements Generator {
 
     private static final String PACKAGE = "dev.simplix.protocolize.data";
+    static final String LEGACY_PREFIX = "LEGACY_";
 
     private final File outputDirectory;
     @Getter
@@ -44,24 +47,34 @@ public class GenericGenerator implements Generator {
 
     @Override
     public void generate() throws Exception {
-        List<String> keys = new ArrayList<>();
-        for(GenericRegistry registry : registries) {
-            for(String type : registry.entries().keySet()){
-                if(!keys.contains(type)){
-                    keys.add(type);
-                }
-            }
-        }
-        keys.sort(String::compareTo);
-        List<String> constants = keys.stream()
-            .map(s -> s.substring("minecraft:".length()).replace(".", "_").replace("/", "_").toUpperCase(Locale.ROOT))
-            .collect(Collectors.toList());
+        List<String> constants = constants(registries);
         validate(constants);
 
         File packageDirectory = new File(outputDirectory, PACKAGE.replace('.', File.separatorChar));
         Files.createDirectories(packageDirectory.toPath());
         Files.write(new File(packageDirectory, name + ".java").toPath(),
             source(constants).getBytes(StandardCharsets.UTF_8));
+    }
+
+    /**
+     * Builds the sorted constant list. The first registry is the latest version and defines the unprefixed
+     * constants. Keys that only exist in older versions are added as LEGACY_ constants, walking from latest to oldest.
+     */
+    static List<String> constants(List<GenericRegistry> latestFirst) {
+        Map<String, String> constantByKey = new HashMap<>();
+        for (int i = 0; i < latestFirst.size(); i++) {
+            String prefix = i == 0 ? "" : LEGACY_PREFIX;
+            for (String key : latestFirst.get(i).entries().keySet()) {
+                constantByKey.putIfAbsent(key, prefix + toConstant(key));
+            }
+        }
+        List<String> keys = new ArrayList<>(constantByKey.keySet());
+        keys.sort(String::compareTo);
+        return keys.stream().map(constantByKey::get).collect(Collectors.toList());
+    }
+
+    private static String toConstant(String key) {
+        return key.substring("minecraft:".length()).replace(".", "_").replace("/", "_").toUpperCase(Locale.ROOT);
     }
 
     private void validate(List<String> constants) {
