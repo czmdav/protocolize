@@ -62,6 +62,12 @@ public class DataModule implements ProtocolizeModule {
             }
 
             registerIdMappings(registries.itemRegistry().entries(), provider, protocolVersion, ItemType.class);
+            if(registries.blockEntityTypeRegistry() != null) {
+                registerIdMappings(registries.blockEntityTypeRegistry().entries(), provider, protocolVersion, BlockEntityType.class);
+            }
+            if(registries.environmentAttributeRegistry() != null) { // only present in the 26.x registries
+                registerIdMappings(registries.environmentAttributeRegistry().entries(), provider, protocolVersion, EnvironmentAttribute.class);
+            }
             if(protocolVersion >= ProtocolVersions.MINECRAFT_1_20_5) {
                 registerIdMappings(registries.attributeRegistry().entries(), provider, protocolVersion, Attribute.class);
                 registerIdMappings(registries.bannerPatternRegistry().entries(), provider, protocolVersion, BannerPattern.class);

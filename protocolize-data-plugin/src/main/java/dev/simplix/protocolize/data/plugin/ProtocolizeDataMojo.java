@@ -62,6 +62,8 @@ public class ProtocolizeDataMojo extends AbstractMojo {
             new GenericGenerator(outputDirectory, collect(versions, Registries::attributeRegistry), "Attribute"),
             new GenericGenerator(outputDirectory, collect(versions, Registries::consumeEffectTypeRegistry), "ConsumeEffectType"),
             new GenericGenerator(outputDirectory, collect(versions, Registries::entityTypeRegistry), "EntityType"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::blockEntityTypeRegistry), "BlockEntityType"),
+            new GenericGenerator(outputDirectory, collect(versions, Registries::environmentAttributeRegistry), "EnvironmentAttribute"),
             new GenericGenerator(outputDirectory, collect(versions, Registries::blockRegistry), "Block"),
             new GenericGenerator(outputDirectory, collect(versions, Registries::enchantmentRegistry), "Enchantment"),
             new GenericGenerator(outputDirectory, collect(versions, Registries::instrumentRegistry), "Instrument"),

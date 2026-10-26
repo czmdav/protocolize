@@ -112,4 +112,10 @@ public class Registries {
 
     @SerializedName("minecraft:cat_variant")
     private GenericRegistry catVariantRegistry;
+
+    @SerializedName("minecraft:block_entity_type")
+    private GenericRegistry blockEntityTypeRegistry;
+
+    @SerializedName("minecraft:environment_attribute")
+    private GenericRegistry environmentAttributeRegistry;
 }
