@@ -8,7 +8,6 @@ import dev.simplix.protocolize.api.item.ItemStack;
 import dev.simplix.protocolize.api.listener.AbstractPacketListener;
 import dev.simplix.protocolize.api.listener.PacketReceiveEvent;
 import dev.simplix.protocolize.api.listener.PacketSendEvent;
-import dev.simplix.protocolize.api.util.ProtocolVersions;
 import dev.simplix.protocolize.data.inventory.InventoryType;
 import dev.simplix.protocolize.data.packets.ClickWindow;
 import dev.simplix.protocolize.data.packets.ConfirmTransaction;
@@ -38,11 +37,6 @@ public final class ClickWindowListener extends AbstractPacketListener<ClickWindo
             return;
         }
         short slot = clickWindow.slot();
-        if (inventory.type() == InventoryType.BREWING_STAND && event.player().protocolVersion() == ProtocolVersions.MINECRAFT_1_8) {
-            if (slot >= 4) {
-                slot++;
-            }
-        }
         InventoryClick click = new InventoryClick(event.player(), inventory, clickWindow.clickType(),
             clickWindow.slot(), clickWindow.windowId(), clickWindow.actionNumber(), false);
         inventory.clickConsumers().forEach(consumer -> consumer.accept(click));

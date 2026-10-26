@@ -11,7 +11,6 @@ import dev.simplix.protocolize.api.util.DebugUtil;
 import dev.simplix.protocolize.api.util.ProtocolUtil;
 import dev.simplix.protocolize.data.ItemType;
 import dev.simplix.protocolize.data.mapping.AbstractLegacyItemNBTProtocolIdMapping;
-import dev.simplix.protocolize.data.mapping.LegacyItemProtocolIdMapping;
 import dev.simplix.protocolize.data.util.NamedBinaryTagUtil;
 import io.netty.buffer.ByteBuf;
 import lombok.extern.slf4j.Slf4j;
@@ -53,31 +52,21 @@ public final class ItemStackSerializer {
             }
             byte amount = buf.readByte();
             short durability = 0;
-            if (protocolVersion < MINECRAFT_1_13) {
-                durability = buf.readShort();
-            }
             if (id == 0) {
                 return new ItemStack(ItemType.AIR, amount, durability);
             }
             CompoundTag tag = readItemTag(buf, protocolVersion);
             ChatElement<?> displayName = null;
             List<ChatElement<?>> lore = readLore(tag, protocolVersion);
-            if (protocolVersion >= MINECRAFT_1_13) {
-                IntTag damageTag = tag.getIntTag("Damage");
-                if (damageTag != null) {
-                    durability = damageTag.asShort();
-                }
-                String extracted = extractDisplayName(tag);
-                if (extracted != null) {
-                    displayName = ChatElement.ofJson(extracted);
-                }
-            } else {
-                String extracted = extractDisplayName(tag);
-                if (extracted != null) {
-                    displayName = ChatElement.ofLegacyText(extracted);
-                }
+            IntTag damageTag = tag.getIntTag("Damage");
+            if (damageTag != null) {
+                durability = damageTag.asShort();
             }
-            ItemType type = lookupItemType(id, durability, protocolVersion);
+            String extracted = extractDisplayName(tag);
+            if (extracted != null) {
+                displayName = ChatElement.ofJson(extracted);
+            }
+            ItemType type = lookupItemType(id, protocolVersion);
             if (type == null && !UNKNOWN_ITEMS.contains(id)) { //prevent console spam by checking if already logged
                 UNKNOWN_ITEMS.add(id);
                 log.warn("Don't know what item {} at protocol {} should be.", id, protocolVersion);
@@ -94,36 +83,14 @@ public final class ItemStackSerializer {
         }
     }
 
-    private static ItemType lookupItemType(int id, short data, int protocolVersion) {
+    private static ItemType lookupItemType(int id, int protocolVersion) {
         Multimap<ItemType, ProtocolMapping> mappings = MAPPING_PROVIDER.mappings(ItemType.class, protocolVersion);
-        List<ItemType> legacyCandidates = new ArrayList<>();
         for (ItemType type : mappings.keySet()) {
-            if (protocolVersion >= MINECRAFT_1_13) {
-                for (ProtocolMapping mapping : mappings.get(type)) {
-                    if (mapping instanceof ProtocolIdMapping) {
-                        if (((ProtocolIdMapping) mapping).id() == id) {
-                            return type;
-                        }
-                    }
-                }
-            } else {
-                for (ProtocolMapping mapping : mappings.get(type)) {
-                    if (mapping instanceof LegacyItemProtocolIdMapping) {
-                        if (((ProtocolIdMapping) mapping).id() == id) {
-                            legacyCandidates.add(type);
-                            if (((LegacyItemProtocolIdMapping) mapping).data() == data) {
-                                return type;
-                            }
-                        }
-                    }
+            for (ProtocolMapping mapping : mappings.get(type)) {
+                if (mapping instanceof ProtocolIdMapping && ((ProtocolIdMapping) mapping).id() == id) {
+                    return type;
                 }
             }
-        }
-        // Tools and stuff with durability will fail the above determination logic.
-        // So we just validate the id and if we are sure about the fact that this item can only
-        // have one possible state, we will return that.
-        if (legacyCandidates.size() == 1) {
-            return legacyCandidates.get(0);
         }
         return null;
     }
@@ -201,7 +168,6 @@ public final class ItemStackSerializer {
                 return;
             }
             int protocolId;
-            short durability = 0;
             ProtocolIdMapping mapping = null;
             if (stack.itemType() == null) {
                 protocolId = -1;
@@ -211,9 +177,6 @@ public final class ItemStackSerializer {
                     protocolId = -2;
                 } else {
                     protocolId = mapping.id();
-                    if (mapping instanceof LegacyItemProtocolIdMapping) {
-                        durability = ((LegacyItemProtocolIdMapping) mapping).data();
-                    }
                 }
             }
             if (protocolId == -2) {
@@ -238,16 +201,11 @@ public final class ItemStackSerializer {
                 ProtocolUtil.writeVarInt(buf, protocolId);
             }
             buf.writeByte(stack.amount());
-            if (protocolVersion < MINECRAFT_1_13) {
-                buf.writeShort(durability);
-            }
             if (stack.nbtData() == null) {
                 stack.nbtData(new CompoundTag());
             }
-            if (protocolVersion >= MINECRAFT_1_13) {
-                stack.nbtData().put("Damage", new IntTag(durability));
-            }
-            writeDisplayNameTag(stack.displayName(), stack.nbtData(), protocolVersion);
+            stack.nbtData().put("Damage", new IntTag(0));
+            writeDisplayNameTag(stack.displayName(), stack.nbtData());
             writeLoreTag(stack.lore(), stack.nbtData(), protocolVersion);
             writeHideFlags(stack.hideFlags(), stack.nbtData());
             if (mapping instanceof AbstractLegacyItemNBTProtocolIdMapping) {
@@ -293,14 +251,14 @@ public final class ItemStackSerializer {
         }
     }
 
-    private static void writeDisplayNameTag(ChatElement<?> name, CompoundTag nbtData, int protocolVersion) {
+    private static void writeDisplayNameTag(ChatElement<?> name, CompoundTag nbtData) {
         if (name == null)
             return;
         CompoundTag display = nbtData.getCompoundTag("display");
         if (display == null) {
             display = new CompoundTag();
         }
-        final StringTag tag = new StringTag(protocolVersion >= MINECRAFT_1_13 ? name.disableItalic().asJson() : name.asLegacyText());
+        final StringTag tag = new StringTag(name.disableItalic().asJson());
         display.put("Name", tag);
         nbtData.put("display", display);
     }

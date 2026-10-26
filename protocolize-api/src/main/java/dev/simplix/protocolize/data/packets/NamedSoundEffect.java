@@ -40,8 +40,6 @@ public class NamedSoundEffect extends AbstractPacket {
     private static final MappingProvider MAPPING_PROVIDER = Protocolize.mappingProvider();
 
     public static final List<ProtocolIdMapping> MAPPINGS = Arrays.asList(
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_8, MINECRAFT_1_8, 0x29),
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_9, MINECRAFT_1_12_2, 0x19),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_13, MINECRAFT_1_13_2, 0x1A),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_14, MINECRAFT_1_14_4, 0x19),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_15, MINECRAFT_1_15_2, 0x1A),
@@ -84,17 +82,12 @@ public class NamedSoundEffect extends AbstractPacket {
     public void read(ByteBuf buf, PacketDirection direction, int protocolVersion) {
         this.protocolVersion = protocolVersion;
         sound = ProtocolUtil.readString(buf);
-        if (protocolVersion > MINECRAFT_1_8)
-            category = SoundCategory.values()[ProtocolUtil.readVarInt(buf)];
+        category = SoundCategory.values()[ProtocolUtil.readVarInt(buf)];
         x = buf.readInt() / 8D;
         y = buf.readInt() / 8D;
         z = buf.readInt() / 8D;
         volume = buf.readFloat();
-        if (protocolVersion < MINECRAFT_1_10) {
-            pitch = buf.readUnsignedByte() / 63F;
-        } else {
-            pitch = buf.readFloat();
-        }
+        pitch = buf.readFloat();
         if (protocolVersion >= MINECRAFT_1_19) {
             seed = buf.readLong();
         }
@@ -113,17 +106,12 @@ public class NamedSoundEffect extends AbstractPacket {
         } else {
             ProtocolUtil.writeString(buf, this.sound);
         }
-        if (protocolVersion > MINECRAFT_1_8)
-            ProtocolUtil.writeVarInt(buf, category.ordinal());
+        ProtocolUtil.writeVarInt(buf, category.ordinal());
         buf.writeInt((int) (x * 8));
         buf.writeInt((int) (y * 8));
         buf.writeInt((int) (z * 8));
         buf.writeFloat(volume);
-        if (protocolVersion < MINECRAFT_1_10) {
-            buf.writeByte((byte) (pitch * 63) & 0xFF);
-        } else {
-            buf.writeFloat(pitch);
-        }
+        buf.writeFloat(pitch);
         if (protocolVersion >= MINECRAFT_1_19) {
             buf.writeLong(seed);
         }

@@ -21,22 +21,22 @@ public class MappingTest {
     @Test
     public void packetMappingTest() {
         Protocolize.mappingProvider().registerMapping(new RegisteredPacket(PacketDirection.SERVERBOUND, TestPacket.class),
-            AbstractProtocolMapping.rangedIdMapping(47, 756, 0x3D));
+            AbstractProtocolMapping.rangedIdMapping(754, 756, 0x3D));
         Protocolize.mappingProvider().registerMapping(new RegisteredPacket(PacketDirection.SERVERBOUND, TestPacket.class),
             AbstractProtocolMapping.rangedIdMapping(23, 46, 0x2D));
         Protocolize.mappingProvider().registerMapping(new RegisteredPacket(PacketDirection.SERVERBOUND, AnotherTestPacket.class),
-            AbstractProtocolMapping.rangedIdMapping(47, 756, 0x3D));
+            AbstractProtocolMapping.rangedIdMapping(754, 756, 0x3D));
 
         List<ProtocolMapping> mappings = Protocolize.mappingProvider().mappings(new RegisteredPacket(PacketDirection.SERVERBOUND, TestPacket.class));
         assert !mappings.isEmpty();
         ProtocolMapping mapping1 = mappings.get(0);
         ProtocolMapping mapping2 = mappings.get(1);
-        assert mapping1.inRange(47);
+        assert mapping1.inRange(754);
         assert mapping2.inRange(24);
 
-        ProtocolMapping mapping = Protocolize.mappingProvider().mapping(new RegisteredPacket(PacketDirection.SERVERBOUND, AnotherTestPacket.class), 47);
+        ProtocolMapping mapping = Protocolize.mappingProvider().mapping(new RegisteredPacket(PacketDirection.SERVERBOUND, AnotherTestPacket.class), 754);
         assert mapping != null;
-        assert mapping.inRange(47);
+        assert mapping.inRange(754);
 
         System.out.println(Protocolize.mappingProvider().debugInformation());
     }

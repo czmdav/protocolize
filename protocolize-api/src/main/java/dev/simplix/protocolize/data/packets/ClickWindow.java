@@ -44,10 +44,6 @@ public class ClickWindow extends AbstractPacket {
     /* ServerboundContainerClickPacket */
 
     public static final List<ProtocolIdMapping> MAPPINGS = Arrays.asList(
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_8, MINECRAFT_1_8, 0x0E),
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_9, MINECRAFT_1_11_2, 0x07),
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_12, MINECRAFT_1_12, 0x08),
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_12_1, MINECRAFT_1_12_2, 0x07),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_13, MINECRAFT_1_13_2, 0x08),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_14, MINECRAFT_1_16_4, 0x09),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_17, MINECRAFT_1_18_2, 0x08),
@@ -99,11 +95,7 @@ public class ClickWindow extends AbstractPacket {
                 this.actionNumber = buf.readShort();
                 sb.append("\n    Action: 0x").append(Integer.toHexString(this.actionNumber).toUpperCase());
             }
-            if (protocolVersion == MINECRAFT_1_8) {
-                this.mode = buf.readByte();
-            } else {
-                this.mode = ProtocolUtil.readVarInt(buf);
-            }
+            this.mode = ProtocolUtil.readVarInt(buf);
             sb.append("\n    Mode: 0x").append(Integer.toHexString(this.mode).toUpperCase());
             if (protocolVersion >= MINECRAFT_1_17) {
                 int length = ProtocolUtil.readVarInt(buf);
@@ -151,11 +143,6 @@ public class ClickWindow extends AbstractPacket {
         buf.writeByte(this.button);
         if (protocolVersion < MINECRAFT_1_17) {
             buf.writeShort(this.actionNumber);
-        }
-        if (protocolVersion == MINECRAFT_1_8) {
-            buf.writeByte(this.mode);
-        } else {
-            ProtocolUtil.writeVarInt(buf, this.mode);
         }
         if (protocolVersion >= MINECRAFT_1_17) {
             ProtocolUtil.writeVarInt(buf, this.slotData.size());

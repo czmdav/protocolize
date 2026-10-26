@@ -4,7 +4,6 @@ import dev.simplix.protocolize.api.PlatformInitializer;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.providers.*;
 import dev.simplix.protocolize.api.util.DebugUtil;
-import dev.simplix.protocolize.api.util.ProtocolVersions;
 import dev.simplix.protocolize.bungee.commands.ProtocolizeCommand;
 import dev.simplix.protocolize.bungee.listener.PlayerListener;
 import dev.simplix.protocolize.bungee.netty.NettyPipelineInjector;
@@ -96,20 +95,6 @@ public class ProtocolizePlugin extends Plugin {
         ProxyServer.getInstance().getPluginManager().registerListener(this, new PlayerListener(this));
 
         ((BungeeCordModuleProvider) Protocolize.getService(ModuleProvider.class)).enableAll();
-
-        Protocolize.playerProvider().onConstruct(protocolizePlayer -> {
-            if (Protocolize.getService(ModuleProvider.class).moduleInstalled("LegacyModule")) {
-                return;
-            }
-            ProxiedPlayer player = protocolizePlayer.handle();
-            if (protocolizePlayer.protocolVersion() < ProtocolVersions.MINECRAFT_1_13) {
-                ProxyServer.getInstance().getLogger().warning("=== WARNING ===");
-                ProxyServer.getInstance().getLogger().warning("The player " + player.getName() + " is using protocol version "
-                    + protocolizePlayer.protocolVersion() + " (earlier than 1.13) which is not supported by protocolize by default.");
-                ProxyServer.getInstance().getLogger().warning("You may experience log spamming due to protocolize not finding appropriate mappings for the clients protocol version.");
-                ProxyServer.getInstance().getLogger().warning("To fix this you have to install the legacy support module for BungeeCord. More info at: https://simplixsoft.com/protocolize");
-            }
-        });
     }
 
     public NettyPipelineInjector nettyPipelineInjector() {

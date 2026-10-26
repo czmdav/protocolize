@@ -7,17 +7,13 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.PluginDescription;
-import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-import com.velocitypowered.api.util.GameProfile;
 import com.velocitypowered.proxy.VelocityServer;
 import com.velocitypowered.proxy.network.ConnectionManager;
 import dev.simplix.protocolize.api.PlatformInitializer;
 import dev.simplix.protocolize.api.Protocolize;
 import dev.simplix.protocolize.api.providers.*;
 import dev.simplix.protocolize.api.util.DebugUtil;
-import dev.simplix.protocolize.api.util.ProtocolVersions;
-import dev.simplix.protocolize.api.util.SkullProfileResolver;
 import dev.simplix.protocolize.velocity.commands.ProtocolizeCommand;
 import dev.simplix.protocolize.velocity.listener.PlayerListener;
 import dev.simplix.protocolize.velocity.netty.ProtocolizeBackendChannelInitializer;
@@ -95,9 +91,6 @@ public class ProtocolizePlugin {
         Protocolize.registerService(ModuleProvider.class, new VelocityModuleProvider());
         Protocolize.registerService(ProtocolRegistrationProvider.class, new VelocityProtocolRegistrationProvider());
         Protocolize.registerService(PacketListenerProvider.class, new VelocityPacketListenerProvider());
-
-        // Allow selectively bypassing Protocolize for certain packets / versions
-        Protocolize.registerService(PacketBypassProvider.class, new VelocityPacketBypassProvider());
     }
 
     @Subscribe
@@ -117,30 +110,6 @@ public class ProtocolizePlugin {
         proxyServer.getEventManager().register(this, new PlayerListener(this));
 
         ((VelocityModuleProvider) Protocolize.getService(ModuleProvider.class)).enableAll();
-
-        // Skull owners of online players can be resolved without asking the Mojang API
-        SkullProfileResolver.localLookup(name -> proxyServer.getPlayer(name).map(player -> {
-            for (GameProfile.Property property : player.getGameProfileProperties()) {
-                if (property.getName().equals("textures")) {
-                    String signature = property.getSignature() == null || property.getSignature().isEmpty() ? null : property.getSignature();
-                    return new SkullProfileResolver.Profile(player.getUniqueId(), player.getUsername(), property.getValue(), signature);
-                }
-            }
-            return null;
-        }).orElse(null));
-
-        Protocolize.playerProvider().onConstruct(protocolizePlayer -> {
-            if (Protocolize.getService(ModuleProvider.class).moduleInstalled("LegacyModule")) {
-                return;
-            }
-            Player player = protocolizePlayer.handle();
-            if (protocolizePlayer.protocolVersion() < ProtocolVersions.MINECRAFT_1_13) {
-                logger.warn("=== WARNING ===");
-                logger.warn("The player {} is using {} which is not supported by protocolize by default.", player.getUsername(), player.getProtocolVersion().getMostRecentSupportedVersion());
-                logger.warn("You may experience log spamming due to protocolize not finding appropriate mappings for the clients protocol version.");
-                logger.warn("To fix this you have to install the legacy support module for velocity. More info at: https://simplixsoft.com/protocolize");
-            }
-        });
     }
 
     private void swapChannelInitializers() throws ReflectiveOperationException {

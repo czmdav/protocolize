@@ -98,7 +98,7 @@ public final class VelocityProtocolRegistrationProvider implements ProtocolRegis
             }
             Class<? extends MinecraftPacket> velocityPacket = generateVelocityPacket(packetClass);
 
-            // Velocity uses a mapping until the next mapping starts. Mappings with gaps between them (like 1.8 and 1.21+)
+            // Velocity uses a mapping until the next mapping starts. Mappings with gaps between them
             // have to be registered separately so the unsupported versions in between do not get a mapping.
             List<StateRegistry.PacketMapping> velocityMappings = new ArrayList<>();
             for (int i = 0; i < sortedMappings.length; i++) {

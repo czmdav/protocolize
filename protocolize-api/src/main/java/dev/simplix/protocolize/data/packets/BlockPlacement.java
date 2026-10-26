@@ -4,7 +4,6 @@ import dev.simplix.protocolize.api.BlockFace;
 import dev.simplix.protocolize.api.BlockPosition;
 import dev.simplix.protocolize.api.Hand;
 import dev.simplix.protocolize.api.PacketDirection;
-import dev.simplix.protocolize.api.item.ItemStack;
 import dev.simplix.protocolize.api.item.ItemStackSerializer;
 import dev.simplix.protocolize.api.mapping.AbstractProtocolMapping;
 import dev.simplix.protocolize.api.mapping.ProtocolIdMapping;
@@ -42,9 +41,6 @@ public class BlockPlacement extends AbstractPacket {
     /* ServerboundUseItemOnPacket */
 
     public final static List<ProtocolIdMapping> MAPPINGS = Arrays.asList(
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_8, MINECRAFT_1_8, 0x08),
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_9, MINECRAFT_1_11_2, 0x1C),
-        AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_12, MINECRAFT_1_12_2, 0x1F),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_13, MINECRAFT_1_13_2, 0x29),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_14, MINECRAFT_1_15_2, 0x2C),
         AbstractProtocolMapping.rangedIdMapping(MINECRAFT_1_16, MINECRAFT_1_16_1, 0x2D),
@@ -75,12 +71,6 @@ public class BlockPlacement extends AbstractPacket {
      */
     private int sequence;
 
-    /**
-     * @deprecated Only in protocol 47 used
-     */
-    @Deprecated
-    private ItemStack stack = ItemStack.NO_DATA;
-
     // skip decoding and save raw packet data
     boolean skipDecoding = false;
     byte[] packetData = null;
@@ -94,40 +84,16 @@ public class BlockPlacement extends AbstractPacket {
             if (protocolVersion < MINECRAFT_1_14) {
                 position = BlockPositionSerializer.read(buf, protocolVersion);
                 sb.append("\n    Position: ").append(position.x()).append(" ").append(position.y()).append(" ").append(position.z());
-                if (protocolVersion > MINECRAFT_1_8) {
-                    face = BlockFace.blockFace(ProtocolUtil.readVarInt(buf));
-                    sb.append("\n    Face: ").append(face.name());
-                    hand = Hand.handByProtocolId(ProtocolUtil.readVarInt(buf));
-                    sb.append("\n    Hand: ").append(hand.name());
-                    if (protocolVersion < MINECRAFT_1_11) {
-                        hitVecX = buf.readByte() / 15F;
-                        sb.append("\n    Hit Vec X: ").append(this.hitVecX);
-                        hitVecY = buf.readByte() / 15F;
-                        sb.append("\n    Hit Vec Y: ").append(this.hitVecY);
-                        hitVecZ = buf.readByte() / 15F;
-                        sb.append("\n    Hit Vec Z: ").append(this.hitVecZ);
-                    } else {
-                        hitVecX = buf.readFloat();
-                        sb.append("\n    Hit Vec X: ").append(this.hitVecX);
-                        hitVecY = buf.readFloat();
-                        sb.append("\n    Hit Vec Y: ").append(this.hitVecY);
-                        hitVecZ = buf.readFloat();
-                        sb.append("\n    Hit Vec Z: ").append(this.hitVecZ);
-                    }
-                } else {
-                    face = BlockFace.blockFace(buf.readByte());
-                    sb.append("\n    Face: ").append(face.name());
-                    hand = Hand.MAIN_HAND;
-                    sb.append("\n    Hand: ").append(hand.name());
-                    stack = ItemStackSerializer.read(buf, protocolVersion);
-                    sb.append("\n    Item: ").append(stack.itemType().name());
-                    hitVecX = buf.readByte() / 15F;
-                    sb.append("\n    Hit Vec X: ").append(this.hitVecX);
-                    hitVecY = buf.readByte() / 15F;
-                    sb.append("\n    Hit Vec Y: ").append(this.hitVecY);
-                    hitVecZ = buf.readByte() / 15F;
-                    sb.append("\n    Hit Vec Z: ").append(this.hitVecZ);
-                }
+                face = BlockFace.blockFace(ProtocolUtil.readVarInt(buf));
+                sb.append("\n    Face: ").append(face.name());
+                hand = Hand.handByProtocolId(ProtocolUtil.readVarInt(buf));
+                sb.append("\n    Hand: ").append(hand.name());
+                hitVecX = buf.readFloat();
+                sb.append("\n    Hit Vec X: ").append(this.hitVecX);
+                hitVecY = buf.readFloat();
+                sb.append("\n    Hit Vec Y: ").append(this.hitVecY);
+                hitVecZ = buf.readFloat();
+                sb.append("\n    Hit Vec Z: ").append(this.hitVecZ);
             } else {
                 hand = Hand.handByProtocolId(ProtocolUtil.readVarInt(buf));
                 sb.append("\n    Hand: ").append(hand.name());
@@ -171,25 +137,11 @@ public class BlockPlacement extends AbstractPacket {
 
         if (protocolVersion < MINECRAFT_1_14) {
             BlockPositionSerializer.write(buf, position, protocolVersion);
-            if (protocolVersion > MINECRAFT_1_8) {
-                ProtocolUtil.writeVarInt(buf, face.protocolId());
-                ProtocolUtil.writeVarInt(buf, hand.protocolId());
-                if (protocolVersion < MINECRAFT_1_11) {
-                    buf.writeByte((int) (hitVecX * 15));
-                    buf.writeByte((int) (hitVecY * 15));
-                    buf.writeByte((int) (hitVecZ * 15));
-                } else {
-                    buf.writeFloat(hitVecX);
-                    buf.writeFloat(hitVecY);
-                    buf.writeFloat(hitVecZ);
-                }
-            } else {
-                buf.writeByte(face.protocolId());
-                ItemStackSerializer.write(buf, stack, protocolVersion);
-                buf.writeByte((int) (hitVecX * 15));
-                buf.writeByte((int) (hitVecY * 15));
-                buf.writeByte((int) (hitVecZ * 15));
-            }
+            ProtocolUtil.writeVarInt(buf, face.protocolId());
+            ProtocolUtil.writeVarInt(buf, hand.protocolId());
+            buf.writeFloat(hitVecX);
+            buf.writeFloat(hitVecY);
+            buf.writeFloat(hitVecZ);
         } else {
             ProtocolUtil.writeVarInt(buf, hand.protocolId());
             BlockPositionSerializer.write(buf, position, protocolVersion);
