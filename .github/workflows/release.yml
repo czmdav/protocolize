@@ -44,11 +44,17 @@ jobs:
       - name: Build and test
         run: mvn -B verify
 
+      - name: Stage Velocity plugin
+        run: |
+          VERSION=$(mvn -B -q -pl protocolize-velocity help:evaluate -Dexpression=project.version -DforceStdout)
+          mkdir -p dist
+          cp protocolize-velocity/target/protocolize-velocity.jar "dist/protocolize-velocity-$VERSION.jar"
+
       - name: Upload Velocity plugin
         uses: actions/upload-artifact@v4
         with:
           name: protocolize-velocity
-          path: protocolize-velocity/target/protocolize-velocity-*-shaded.jar
+          path: dist/protocolize-velocity-*.jar
           if-no-files-found: error
 
   release:
@@ -69,7 +75,7 @@ jobs:
           GH_REPO: ${{ github.repository }}
         run: |
           JAR=$(ls dist/*.jar)
-          VERSION=$(basename "$JAR" | sed -E 's/^protocolize-velocity-(.*)-shaded\.jar$/\1/')
+          VERSION=$(basename "$JAR" | sed -E 's/^protocolize-velocity-(.*)\.jar$/\1/')
           TAG="v$VERSION"
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "$JAR" --clobber
