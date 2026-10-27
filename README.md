@@ -47,11 +47,11 @@ dependencies {
 
 ## Compatibility
 
-Protocolize is shipped with it's default data module which adds support for the following versions:
+Protocolize is shipped with its default data module which adds support for the following versions:
 | Minecraft Version | Supported |
 |--|--|
-| 1.8.x | ✔️ (Only with [additional legacy module](https://ci.exceptionflug.de/job/Protocolize-Legacy-Data/)) |
-| 1.9 - 1.20.6 | ❌ |
+| ≤ 1.12.2 | ❌ |
+| 1.13 - 1.20.6 | ✔️ |
 | 1.21 - 1.21.11 | ✔️ |
 | 26.1 - 26.3 | ✔️ (Requires a Velocity build supporting the version) |
 
