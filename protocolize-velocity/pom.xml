@@ -11,8 +11,9 @@
     </parent>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
+        <maven.compiler.release>25</maven.compiler.release>
     </properties>
 
     <groupId>dev.simplix</groupId>
@@ -21,9 +22,9 @@
 
     <dependencies>
         <!-- The Velocity proxy build contains the API, the proxy internals and the plugin annotation processor.
-             Velocity 3.5.0 is required for Minecraft 1.21.5+. It is not published to a maven repository, install it
-             locally using: mvn install:install-file -Dfile=velocity.jar -DgroupId=com.velocitypowered
-             -DartifactId=velocity-proxy -Dversion=3.5.0-SNAPSHOT -Dpackaging=jar -->
+             The proxy internals are not published to a maven repository. Install the Velocity 4.0.0 build jar locally using:
+             mvn install:install-file -Dfile=velocity-4.0.0-6.jar -DgroupId=com.velocitypowered
+             -DartifactId=velocity-proxy -Dversion=4.0.0 -Dpackaging=jar -->
         <dependency>
             <groupId>com.velocitypowered</groupId>
             <artifactId>velocity-proxy</artifactId>
@@ -82,7 +83,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.38</version>
+                            <version>1.18.48</version>
                         </path>
                         <path>
                             <groupId>com.velocitypowered</groupId>
@@ -107,7 +108,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.6.2</version>
                 <executions>
                     <execution>
                         <phase>package</phase>

@@ -55,7 +55,7 @@ Protocolize is shipped with its default data module which adds support for the f
 | 1.21 - 1.21.11 | ✔️ |
 | 26.1 - 26.3 | ✔️ (Requires a Velocity build supporting the version) |
 
-Protocolize requires Velocity 3.5.0 or newer running on Java 21.
+Protocolize requires Velocity 4.0.0 or newer running on Java 25.
 
 Implemented packets by default:
 
