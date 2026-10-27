@@ -10,7 +10,7 @@
     <a href="https://twitter.com/Exceptionflug"><img src="https://img.shields.io/twitter/follow/Exceptionflug?label=Twitter&style=social"></a>
 </div>
 
-# Protocolize v2
+# Protocolize v3
 This is the official repository for the next generation proxy server protocol manipulation framework. If you wish to see the repository for Protocolize v1, click [here](https://github.com/Exceptionflug/protocolize/tree/v1).
 
 ## Getting started
