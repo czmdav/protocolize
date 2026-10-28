@@ -9,15 +9,13 @@
     <a href="https://github.com/czmdav/protocolize/blob/develop/LICENSE"><img src="https://img.shields.io/github/license/czmdav/protocolize"></a>
 </div>
 
-> **Note:** This repository is a fork of [Exceptionflug's Protocolize](https://github.com/Exceptionflug/Protocolize).
-
 # Protocolize3
-This is the official repository for the next generation proxy server protocol manipulation framework. If you wish to see the repository for Protocolize v1, click [here](https://github.com/Exceptionflug/protocolize/tree/v1).
+This is a fork of the official repository ([Exceptionflug's Protocolize](https://github.com/Exceptionflug/Protocolize)), the next generation proxy server protocol manipulation framework.
 
 ## Getting started
 ### Installation
-In order to use Protocolize, you have to install it onto your proxy server. Protocolize is supporting BungeeCord and Velocity proxy servers.
-Download the latest protocolize version for your proxy software right here: https://exceptionflug.de/protocolize.
+In order to use Protocolize, you have to install it onto your proxy server. This fork of Protocolize is only supporting Velocity proxy server.
+Download the latest protocolize version for your proxy software right here: https://github.com/czmdav/protocolize/releases.
 ### Maven dependency and repository
 The API is published through [JitPack](https://jitpack.io/#czmdav/protocolize).
 ```xml
@@ -53,9 +51,7 @@ Protocolize is shipped with its default data module which adds support for the f
 | Minecraft Version | Supported |
 |--|--|
 | ≤ 1.12.2 | ❌ |
-| 1.13 - 1.20.6 | ✔️ |
-| 1.21 - 1.21.11 | ✔️ |
-| 26.1 - 26.3 | ✔️ (Requires a Velocity build supporting the version) |
+| 1.13 - 26.3 | ✔️ (Requires a Velocity build supporting the version) |
 
 Protocolize requires Velocity 4.0.0 or newer running on Java 25.
 
@@ -87,4 +83,4 @@ You can easily add support for new packets and versions by installing modules.
 
 ## Get some help
 For documentation take a look at the wiki pages.
-If you have questions feel free to join our [discord server](https://discord.gg/ZsYjwcNRbV).
+If you have questions feel free to join the official [discord server](https://discord.gg/ZsYjwcNRbV).
