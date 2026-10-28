@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  * @author Exceptionflug
  */
 @Plugin(
-    name = "Protocolize",
+    name = "Protocolize3",
     authors = {
         "Exceptionflug",
         "proferabg"

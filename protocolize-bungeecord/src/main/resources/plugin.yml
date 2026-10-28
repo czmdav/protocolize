@@ -1,4 +1,4 @@
-name: Protocolize
+name: Protocolize3
 version: '${project.version}:${build.number}'
 authors: [Exceptionflug, proferabg]
 
