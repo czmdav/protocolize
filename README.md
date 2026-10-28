@@ -30,7 +30,7 @@ The API is published through [JitPack](https://jitpack.io/#czmdav/protocolize).
 <dependency>
     <groupId>com.github.czmdav.protocolize</groupId>
     <artifactId>protocolize-api</artifactId>
-    <version>v3.0.0</version>
+    <version>v3.0.1</version>
     <scope>provided</scope>
 </dependency>
 ```
@@ -43,7 +43,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.github.czmdav.protocolize:protocolize-api:v3.0.0")
+    compileOnly("com.github.czmdav.protocolize:protocolize-api:v3.0.1")
 }
 ```
 

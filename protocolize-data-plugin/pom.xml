@@ -7,12 +7,10 @@
     <parent>
         <groupId>dev.simplix</groupId>
         <artifactId>protocolize</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
     </parent>
 
-    <groupId>dev.simplix</groupId>
     <artifactId>protocolize-data-plugin</artifactId>
-    <version>3.0.0</version>
     <packaging>maven-plugin</packaging>
 
     <dependencies>
@@ -42,7 +40,7 @@
         <dependency>
             <groupId>dev.simplix</groupId>
             <artifactId>protocolize-data-registries</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

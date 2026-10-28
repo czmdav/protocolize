@@ -7,7 +7,7 @@
     <parent>
         <groupId>dev.simplix</groupId>
         <artifactId>protocolize</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
     </parent>
 
     <artifactId>protocolize-api</artifactId>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>dev.simplix</groupId>
             <artifactId>protocolize-data-registries</artifactId>
-            <version>${project.parent.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.Querz</groupId>
@@ -73,7 +73,7 @@
             <plugin>
                 <groupId>dev.simplix</groupId>
                 <artifactId>protocolize-data-plugin</artifactId>
-                <version>${project.parent.version}</version>
+                <version>${project.version}</version>
                 <configuration>
                     <registriesDirectory>${project.basedir}/../protocolize-data-registries/src/main/resources/registries</registriesDirectory>
                 </configuration>

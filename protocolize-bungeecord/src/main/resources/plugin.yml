@@ -1,5 +1,5 @@
 name: Protocolize3
-version: '${project.version}:${build.number}'
+version: '${project.version}'
 authors: [Exceptionflug, proferabg]
 
 main: dev.simplix.protocolize.bungee.ProtocolizePlugin
