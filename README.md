@@ -6,7 +6,7 @@
     <a href="https://github.com/czmdav/protocolize/releases"><img src="https://img.shields.io/github/downloads/czmdav/protocolize/total?color=GREEN&label=Downloads"></a>
     <a href="https://github.com/czmdav/protocolize/issues"><img src="https://img.shields.io/github/issues/czmdav/protocolize?label=Issues"></a>
     <a href="https://github.com/czmdav/protocolize/pulls"><img src="https://img.shields.io/github/issues-pr/czmdav/protocolize?label=Pull%20requests"></a>
-    <img src="https://img.shields.io/github/license/Exceptionflug/Protocolize"></a>
+    <a href="https://github.com/czmdav/protocolize/blob/develop/LICENSE"><img src="https://img.shields.io/github/license/czmdav/protocolize"></a>
 </div>
 
 > **Note:** This repository is a fork of [Exceptionflug's Protocolize](https://github.com/Exceptionflug/Protocolize).
@@ -19,30 +19,31 @@ This is the official repository for the next generation proxy server protocol ma
 In order to use Protocolize, you have to install it onto your proxy server. Protocolize is supporting BungeeCord and Velocity proxy servers.
 Download the latest protocolize version for your proxy software right here: https://exceptionflug.de/protocolize.
 ### Maven dependency and repository
+The API is published through [JitPack](https://jitpack.io/#czmdav/protocolize).
 ```xml
 <repository>
-    <id>exceptionflug</id>
-    <url>https://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
 </repository>
 ```
 ```xml
 <dependency>
-    <groupId>dev.simplix</groupId>
+    <groupId>com.github.czmdav.protocolize</groupId>
     <artifactId>protocolize-api</artifactId>
-    <version>3.0.0</version>
+    <version>v3.0.0</version>
     <scope>provided</scope>
 </dependency>
 ```
 **Or alternatively, with Gradle:**
 ```kotlin
-repsitories {
+repositories {
     maven {
-        url = uri('https://mvn.exceptionflug.de/repository/exceptionflug-public/')
+        url = uri('https://jitpack.io')
     }
 }
 
 dependencies {
-    compileOnly("dev.simplix:protocolize-api:3.0.0")
+    compileOnly("com.github.czmdav.protocolize:protocolize-api:v3.0.0")
 }
 ```
 
