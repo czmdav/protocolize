@@ -5,11 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>dev.simplix</groupId>
+        <groupId>com.github.czmdav</groupId>
         <artifactId>protocolize</artifactId>
-        <version>3.0.1</version>
+        <version>${revision}</version>
     </parent>
 
+    <groupId>com.github.czmdav.protocolize</groupId>
     <artifactId>protocolize-bungeecord</artifactId>
 
     <dependencies>
@@ -29,7 +30,7 @@
         </dependency>
 
         <dependency>
-            <groupId>dev.simplix</groupId>
+            <groupId>com.github.czmdav.protocolize</groupId>
             <artifactId>protocolize-api</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
