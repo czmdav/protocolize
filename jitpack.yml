@@ -6,4 +6,4 @@ install:
   - wget -q https://fill-data.papermc.io/v1/objects/4540289f48c83e305fc2f2c495a84d1f4d0b7f360830251e169dd5a208740e70/velocity-4.0.0-6.jar -O velocity.jar
   - echo "4540289f48c83e305fc2f2c495a84d1f4d0b7f360830251e169dd5a208740e70  velocity.jar" | sha256sum -c -
   - ./apache-maven-3.9.9/bin/mvn -B -q install:install-file -Dfile=velocity.jar -DgroupId=com.velocitypowered -DartifactId=velocity-proxy -Dversion=4.0.0 -Dpackaging=jar
-  - ./apache-maven-3.9.9/bin/mvn -B -DskipTests install
+  - ./apache-maven-3.9.9/bin/mvn -B -Dchangelist= -DskipTests install

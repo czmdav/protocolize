@@ -42,11 +42,11 @@ jobs:
             -Dpackaging=jar
 
       - name: Build and test
-        run: mvn -B verify
+        run: mvn -B -Dchangelist= verify
 
       - name: Stage Velocity plugin
         run: |
-          VERSION=$(mvn -B -q -pl protocolize-velocity help:evaluate -Dexpression=project.version -DforceStdout)
+          VERSION=$(mvn -B -q -Dchangelist= -pl protocolize-velocity help:evaluate -Dexpression=project.version -DforceStdout)
           mkdir -p dist
           cp protocolize-velocity/target/protocolize-velocity.jar "dist/protocolize-velocity-$VERSION.jar"
 
