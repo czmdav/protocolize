@@ -119,6 +119,10 @@
                                     <pattern>net.bytebuddy</pattern>
                                     <shadedPattern>dev.simplix.protocolize.velocity.libs.bytebuddy</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>net.querz</pattern>
+                                    <shadedPattern>dev.simplix.protocolize.velocity.libs.querz</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
